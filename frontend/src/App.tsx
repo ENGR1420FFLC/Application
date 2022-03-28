@@ -1,13 +1,16 @@
 import React from 'react';
-
-import Calendar from './components/Calendar';
+import "./App.css"
+import { ThemeProvider } from 'styled-components';
+import Calendar from './components/calendar/Calendar';
+import BaseTheme from './themes/BaseTheme';
 
 const App = () => {
     return (
         <div>
-            Hello world
-
-            <Calendar/>
+            <ThemeProvider theme={BaseTheme}>
+                Hello world
+                <Calendar/>
+            </ThemeProvider>
         </div>
     )
 }
