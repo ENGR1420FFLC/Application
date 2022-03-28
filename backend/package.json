@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for FFLC Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ENGR1420FFLC/Application.git"
+  },
+  "author": "ENGR 1420 FFLC Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ENGR1420FFLC/Application/issues"
+  },
+  "homepage": "https://github.com/ENGR1420FFLC/Application#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
