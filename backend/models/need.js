@@ -1,7 +1,7 @@
 const mongoose = require('./connection');
 
 const needSchema = new mongoose.Schema({
-  location: locationSchema,
+  location: mongoose.ObjectId,
   name: String,
   description: String,
   Amount: Number,

@@ -2,9 +2,9 @@ const mongoose = require('./connection');
 
 //TODO: Finish implementing schemas
 const foodDeliverySchema = new mongoose.Schema({
-  needId: ObjectId,
+  needId: mongoose.ObjectId,
   fulfiller: String,
-  haveId: ObjectId,
+  haveId: mongoose.ObjectId,
   name: String,
   quantity: Number,
   allergenInformation: String,
@@ -13,7 +13,7 @@ const foodDeliverySchema = new mongoose.Schema({
   status: String,
 })
 
-locationSchema.set('toJSON', {
+foodDeliverySchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -21,4 +21,4 @@ locationSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Location', locationSchema)
+module.exports = mongoose.model('FoodDelivery', foodDeliverySchema)
