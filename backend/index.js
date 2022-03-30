@@ -22,7 +22,7 @@ app.get('/api/haves', (request, response) => {
   })
 })
 
-app.get('/api/needs', (request, response) => {
+app.get('/api/locations', (request, response) => {
   Location.find({}).then(locations => {
     response.json(locations)
   })
