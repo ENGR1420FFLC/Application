@@ -2,7 +2,15 @@ const mongoose = require('./connection');
 
 //TODO: Finish implementing schemas
 const foodDeliverySchema = new mongoose.Schema({
-  need_id: []
+  needId: ObjectId,
+  fulfiller: String,
+  haveId: ObjectId,
+  name: String,
+  quantity: Number,
+  allergenInformation: String,
+  expirationDate: Date,
+  fulfillmentDate: Date,
+  status: String,
 })
 
 locationSchema.set('toJSON', {
