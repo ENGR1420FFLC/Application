@@ -62,7 +62,7 @@ const Calendar = () => {
             <Header>{Months[displayMonth]}</Header>
 
             <DaysWrapper>
-                {Days.map(d => <div>{d}</div>)}
+                {/* {Days.map(d => <div>{d}</div>)} */}
             </DaysWrapper>
             <DaysWrapper>
                 {dayObjects}
