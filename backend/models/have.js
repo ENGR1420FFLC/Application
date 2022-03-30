@@ -4,7 +4,7 @@ const haveSchema = new mongoose.Schema({
   location: mongoose.ObjectId,
   name: String,
   description: String,
-  Amount: Number,
+  amount: Number,
   status:String
 })
 
