@@ -1,1 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&family=Roboto+Slab&display=swap');
+
+body {
+    margin: 0;
+}
+
+.leaflet-container {
+    width: 100%;
+    padding-top: 60%;
+    border-radius: 5px;
+    border: 1px solid #e2e2e2;
+}
