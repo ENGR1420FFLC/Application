@@ -3,9 +3,10 @@ import styled from "styled-components"
 import Have from "../../services/models/Have"
 import Button from "../button/Button"
 import { FaTrash, FaPhoneAlt } from "react-icons/fa"
-import BaseTheme from "../../themes/BaseTheme"
-import Need from "../../services/models/Need"
 import { ImLoop2 } from "react-icons/im"
+import BaseTheme from "../../themes/BaseTheme"
+import Item from "../../services/models/Item"
+import Need from "../../services/models/Need"
 
 const ItemWrapper = styled.div(({ theme, selected }: { theme:any, selected: boolean}) => `
     font-family: ${theme.bodyFontFamily};
@@ -41,14 +42,14 @@ const DeleteWrapper = styled.div`
     justify-self: end;
 `
 
-const Status = styled.div(({ status }: { status: String }) => `
-    background-color: ${status === "FULFILLED" ? BaseTheme.validColor
-        : status === "MATCHED" ? BaseTheme.midColor
+const Status = styled.div(({ status }: { status: number }) => `
+    background-color: ${status === 2 ? BaseTheme.validColor
+        : status === 1 ? BaseTheme.midColor
             : BaseTheme.invalidColor
     };
 
-    color: ${status === "FULFILLED" ? BaseTheme.invertedTextColor
-        : status === "MATCHED" ? BaseTheme.textColor
+    color: ${status === 2 ? BaseTheme.invertedTextColor
+        : status === 1 ? BaseTheme.textColor
         : BaseTheme.invertedTextColor
     };
 
@@ -64,23 +65,23 @@ const Status = styled.div(({ status }: { status: String }) => `
 
 const Gap = styled.div`display: flex; gap: 5px; align-items: center;`
 
-const NeedItem = ({ need, remove, isUser }: { need: Need, remove: () => void, isUser: boolean }) => {
+const TableItem = ({ item, remove, isUser }: { item: Have | Need, remove: () => void, isUser: boolean }) => {
     return <ItemWrapper selected={isUser}>
         <Field>{isUser ? "" : <Button content={"Request"} onClick={remove} small/>}</Field>
 
         <Field><Button content={
             <Gap>
                 <FaPhoneAlt/>
-                {need.location.toString().substring(need.location.toString().length - 5)}
+                {item.location.toString().substring(item.location.toString().length - 5)}
             </Gap>
             } onClick={remove} small /></Field>
 
-        <Field><Gap>{need.recurring ? <ImLoop2 /> : ""} {need.name}</Gap></Field>
-        <Field>{need.amount}</Field>
-        <Field>{need.description}</Field>
-        <Field>{need.deadline.toLocaleDateString('en-US')}</Field>
+        <Field><Gap>{item.recurring ? <ImLoop2 /> : ""} {item.name}</Gap></Field>
+        <Field>{item.amount}</Field>
+        <Field>{item.description}</Field>
+        <Field>{item.expiry.toLocaleDateString('en-US')}</Field>
 
-        <Status status={need.status}>{need.status}</Status>
+        <Status status={item.status}>{item.status === 2 ? "FULFILLED" : item.status === 1 ? "MATCHED" : "UNMET"}</Status>
 
         <DeleteWrapper>
             <Button content={<FaTrash />} onClick={remove} color={BaseTheme.invalidColor} />
@@ -88,4 +89,4 @@ const NeedItem = ({ need, remove, isUser }: { need: Need, remove: () => void, is
     </ItemWrapper>
 }
 
-export default NeedItem
+export default TableItem

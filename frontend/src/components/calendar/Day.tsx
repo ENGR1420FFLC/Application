@@ -1,5 +1,11 @@
-import React from "react";
+import mongoose from "mongoose";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Item from "../../services/models/Item";
+import Table from "../inventory/Table";
+import Popup from "../popup/Popup";
+import { Header, HeaderWrapper } from "../textStyles/TextStyles";
+import SmallItem from "./SmallItem";
 
 const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday: boolean, offset: number }) => `
     flex: 0 0 14%;
@@ -8,7 +14,31 @@ const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday
     box-sizing: border-box;
     height: 120px;
     padding: 5px;
+    padding-top: 35px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    &:before {
+        z-index: 0;
+        content:'';
+        width:100%;
+        height:100%;
+        position:absolute;
+        left:0;
+        top:0;
+        background: linear-gradient(to top, ${theme.neutralColor} 5px, transparent 20px);
+    }
+
+    &:hover {
+        border: 1px solid ${theme.accentColor};
+        cursor: pointer;
+    }
 
     ${offset ? "grid-column-start: " + (offset + 1) + ";" : ""}
 `)
@@ -30,10 +60,21 @@ const DayBubble = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     border-radius: 100%;
 `)
 
-const Day = ({ day, offset = 0, isToday }: { day: number, offset?: number, isToday?: boolean }) => {
+const Day = ({ day, offset = 0, isToday, content }: { day: number, offset?: number, isToday?: boolean, content: Array<Item> }) => {
+
+    const [showPopup, setShowPopup] = useState(false)
+
     return (
-        <DayWrapper offset={offset} isToday={isToday || false}>
+        <DayWrapper offset={offset} isToday={isToday || false} onClick={() => setShowPopup(true)}>
             <DayBubble isToday={isToday || false}>{day}</DayBubble>
+
+            {content.map(i => <SmallItem item={i} key={i.id.toString()}/>)}
+
+            {/* {showPopup ? 
+                <Popup close={() => setShowPopup(false)}>
+                    <Table key="i" name="Inventory" allItems={content} setAllItems={() => null} userLocation={new mongoose.Types.ObjectId()} />
+                </Popup>
+            : ""} */}
         </DayWrapper>
     )
 }

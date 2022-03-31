@@ -13,14 +13,14 @@ const HeaderWrapper = styled.div`
     margin-bottom: 10px;
 `
 
-const NeedTableHeader = () => <HeaderWrapper>
+const TableHeader = () => <HeaderWrapper>
     <div></div>
     <div>LOCATION</div>
     <div>NAME</div>
     <div>QTY.</div>
     <div>DESC</div>
-    <div>DEADLINE</div>
+    <div>EXPIRY</div>
     <div>STATUS</div>
 </HeaderWrapper>
 
-export default NeedTableHeader
+export default TableHeader

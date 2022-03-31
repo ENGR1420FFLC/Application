@@ -1,69 +1,71 @@
 import mongoose from "mongoose"
 import Have from "./models/Have"
+import Item from "./models/Item"
 import Need from "./models/Need"
 const axios = require('axios')
+
+enum ItemTypes {
+    HAVE, NEED
+}
 
 const allHaves = new Array<Have>()
 const allNeeds = new Array<Need>()
 
-const addHave = (
+const addItem = (
+    type: ItemTypes,
     name: string, 
     amount: number, 
-    expiration=new Date(), 
-    location = new mongoose.Types.ObjectId(),
+    expiry=new Date(), 
+    location=new mongoose.Types.ObjectId(),
     recurring=false,
-    status="UNMET",
+    status=(Math.floor(Math.random() * 3)),
     description="No description provided..."
-    ): Promise<Have> => {
+): Promise<Item> => {
     return new Promise((resolve, reject) => {
 
-        const res: Have = {
+        const res: Item = {
             id: new mongoose.Types.ObjectId(),
             location: location,
             name: name,
             description: description,
             amount: amount,
             status: status,
-            expiration: expiration,
+            expiry: expiry,
             recurring: recurring
         }
 
-        allHaves.push(res)
+        if (type === ItemTypes.HAVE) allHaves.push(res)
+        else allNeeds.push(res)
         resolve(res)
     })
 }
 
-const getAllHaves = (): Promise<Array<Have>> => {
 
-    return new Promise((resolve, reject) => {
-        resolve(allHaves)
-    })
-}
+const addHave = (
+    name: string,
+    amount: number,
+    expiry = new Date(),
+    location = new mongoose.Types.ObjectId(),
+    recurring = false,
+    status = (Math.floor(Math.random() * 3)),
+    description = "No description provided..."
+): Promise<Have> => addItem(ItemTypes.HAVE, name, amount, expiry, location, recurring, status, description)
+
 
 const addNeed = (
     name: string,
     amount: number,
-    deadline = new Date(),
+    expiry = new Date(),
     location = new mongoose.Types.ObjectId(),
     recurring = false,
-    status = "UNMET",
+    status = (Math.floor(Math.random() * 3)),
     description = "No description provided..."
-): Promise<Need> => {
+): Promise<Need> => addItem(ItemTypes.NEED, name, amount, expiry, location, recurring, status, description)
+
+
+const getAllHaves = (): Promise<Array<Have>> => {
     return new Promise((resolve, reject) => {
-
-        const res: Need = {
-            id: new mongoose.Types.ObjectId(),
-            location: location,
-            name: name,
-            description: description,
-            amount: amount,
-            status: status,
-            recurring: recurring,
-            deadline: deadline
-        }
-
-        allNeeds.push(res)
-        resolve(res)
+        resolve(allHaves)
     })
 }
 

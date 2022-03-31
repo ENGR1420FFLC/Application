@@ -1,14 +1,6 @@
 import mongoose from "mongoose";
+import Item from "./Item";
 
-type Need = {
-    id: mongoose.Types.ObjectId,
-    location: mongoose.Types.ObjectId,
-    name: String,
-    description: String,
-    amount: Number,
-    status: String,
-    deadline: Date,
-    recurring: boolean
-}
+type Need = Item
 
 export default Need

@@ -4,16 +4,18 @@ import Have from "../../services/models/Have"
 import Button from "../button/Button"
 import { FaTrash } from "react-icons/fa"
 import BaseTheme from "../../themes/BaseTheme"
-import HaveItem from "./HaveItem"
-import HaveTableHeader from "./HaveTableHeader"
+import TableItem from "./TableItem"
+import TableHeader from "./TableHeader"
 import { Header, HeaderWrapper } from "../textStyles/TextStyles"
 import Slider from "../slider/Slider"
 import mongoose from "mongoose"
+import Need from "../../services/models/Need"
 
 type PropTypes = {
+    name: string
     userLocation: mongoose.Types.ObjectId
-    allHaves: Array<Have>
-    setAllHaves: React.Dispatch<Array<Have>>
+    allItems: Array<Have | Need>
+    setAllItems: React.Dispatch<Array<Have | Need>>
 }
 
 const ItemsWrapper = styled.div`
@@ -22,30 +24,30 @@ const ItemsWrapper = styled.div`
     gap: 10px;
 `
 
-const Inventory = ({ userLocation, allHaves, setAllHaves }: PropTypes) => {
+const Table = ({ name, userLocation, allItems, setAllItems }: PropTypes) => {
 
     const [showOnlyUser, setShowOnlyUser] = useState(true)
     const [showOnlyRecurring, setShowOnlyRecurring] = useState(false)
 
-    let toDisplay = showOnlyUser ? allHaves.filter(h => h.location.equals(userLocation)) : allHaves
+    let toDisplay = showOnlyUser ? allItems.filter(h => h.location.equals(userLocation)) : allItems
     toDisplay = showOnlyRecurring ? toDisplay.filter(h => h.recurring) : toDisplay
 
-    const removeItem = (toRemove: Have) => {return () => {
-        setAllHaves(allHaves.filter(existing => !existing.id.equals(toRemove.id)))
+    const removeItem = (toRemove: Have | Need) => {return () => {
+        setAllItems(allItems.filter(existing => !existing.id.equals(toRemove.id)))
     }}
 
     return(
         <>
             <HeaderWrapper>
-                <Header>Inventory</Header>
+                <Header>{name}</Header>
                 <Slider value={showOnlyRecurring} setValue={setShowOnlyRecurring} trueContent="Recurring" falseContent="All types" />
-                <Slider value={showOnlyUser} setValue={setShowOnlyUser} trueContent="Your Inventory" falseContent="All Inventory" />
+                <Slider value={showOnlyUser} setValue={setShowOnlyUser} trueContent="Yours" falseContent="Everyones" />
             </HeaderWrapper>
-            <HaveTableHeader/>
+            <TableHeader/>
             <ItemsWrapper>
-                {toDisplay.map(h => <HaveItem 
+                {toDisplay.map(h => <TableItem 
                     key={h.id.toString()} 
-                    have={h} 
+                    item={h}
                     remove={removeItem(h)} 
                     isUser={h.location.equals(userLocation)}/>)}
             </ItemsWrapper>
@@ -54,4 +56,4 @@ const Inventory = ({ userLocation, allHaves, setAllHaves }: PropTypes) => {
 
 }
 
-export default Inventory
+export default Table
