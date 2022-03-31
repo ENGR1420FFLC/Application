@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import CalendarService from "../../services/CalendarService"
 import Button from "../button/Button"
-import CalendarEvent from "./CalendarEvent"
 import Day from "./Day"
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Header, HeaderWrapper } from "../textStyles/TextStyles";
 
 const CalendarWrapper = styled.div`
     border-radius: 5px;
@@ -12,7 +11,7 @@ const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px;
+    padding: 0 10px;
     width: 100%;
     box-sizing: border-box;
 `
@@ -26,25 +25,8 @@ const DaysWrapper = styled.div`
 
 const DaysHeader = styled(DaysWrapper)`
     color: ${p => p.theme.darkenedNeutralColor};
-    text-align: center;
-`
-
-const Header = styled.div`
-    font-family: ${p => p.theme.headingFontFamily};
     font-weight: 800;
     text-align: center;
-    font-size: 2em;
-    margin-left: auto;
-`
-
-const HeaderWrapper = styled.div`
-    position: relative;
-    font-family: ${p => p.theme.bodyFontFamily};
-    border-bottom: 1px solid ${p => p.theme.complementColor};
-    padding-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 `
 
 enum Days {
@@ -57,14 +39,11 @@ enum Months {
 
 const Calendar = () => {
 
-    const empty: Array<CalendarEvent> = []
-    const [allEvents, setAllEvents] = useState(empty)
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
     const [todaysDate, setTodaysDate] = useState(new Date())
 
     useEffect(() => {
-        CalendarService.getEvents().then(events => setAllEvents(events))
     }, [])
 
     const numDays = new Date(displayYear, displayMonth + 1, 0).getDate()
@@ -102,22 +81,23 @@ const Calendar = () => {
     }
 
     return (
-        <CalendarWrapper>
-
+        <>
             <HeaderWrapper>
+                <Header>{Months[displayMonth]} {displayYear}</Header>
                 <Button content={<FaArrowLeft />} onClick={decrementMonth} />
                 <Button content={<FaArrowRight />} onClick={incrementMonth} />
                 <Button content="Today" onClick={resetDate} />
-                <Header>{Months[displayMonth]} {displayYear}</Header>
             </HeaderWrapper>
 
-            <DaysHeader>
-                {dayHeaders}
-            </DaysHeader>
-            <DaysWrapper>
-                {dayObjects}
-            </DaysWrapper>
-        </CalendarWrapper>
+            <CalendarWrapper>
+                <DaysHeader>
+                    {dayHeaders}
+                </DaysHeader>
+                <DaysWrapper>
+                    {dayObjects}
+                </DaysWrapper>
+            </CalendarWrapper>
+        </>
     )
 }
 

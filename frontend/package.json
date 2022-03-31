@@ -47,6 +47,8 @@
     ]
   },
   "devDependencies": {
-    "@types/leaflet": "^1.7.9"
+    "@types/leaflet": "^1.7.9",
+    "bson": "^4.6.2",
+    "mongoose": "^6.2.9"
   }
 }

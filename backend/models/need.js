@@ -5,8 +5,8 @@ const needSchema = new mongoose.Schema({
   name: String,
   description: String,
   amount: Number,
-  status:String,
-  deadline:Date
+  status: String,
+  deadline: Date
 })
 
 needSchema.set('toJSON', {
