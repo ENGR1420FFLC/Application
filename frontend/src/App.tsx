@@ -26,7 +26,7 @@ const App = () => {
 
     useEffect(() => {
 
-        for (let i = 1; i < 10; i++) {
+        for (let i = 1; i < 5; i++) {
             Service.addNeed(`Need Meal ${i}`, Math.round(Math.random() * 100), new Date(`2022-4-${i}`), new mongoose.Types.ObjectId(), (Math.random() > 0.5))
             Service.addHave(`Have Meal ${i}`, Math.round(Math.random() * 100), new Date(`2022-4-${i}`), new mongoose.Types.ObjectId(), (Math.random() > 0.5))
         }
@@ -35,9 +35,6 @@ const App = () => {
             .addHave("1 Meal", 100, new Date("2022-3-30"), myLocation)
             .then(res => Service.addHave("2 Meal", 90, new Date("2022-3-31"), myLocation, true))
             .then(res => Service.addHave("3 Meal", 90, new Date("2022-3-31"), myLocation, true))
-            .then(res => Service.addHave("2 Meal", 90, new Date("2022-3-31"), myLocation, true))
-            .then(res => Service.addHave("2 Meal", 90, new Date("2022-3-31"), myLocation, true))
-            .then(res => Service.addHave("2 Meal", 90, new Date("2022-3-31"), myLocation, true))
             .then(res => Service.addNeed("Need 2 Meal", 90, new Date("2022-3-31"), myLocation, true))
             .then(res => Service.addNeed("awd 2 Meal", 90, new Date("2022-3-31"), myLocation, true))
 

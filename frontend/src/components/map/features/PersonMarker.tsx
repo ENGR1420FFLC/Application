@@ -2,9 +2,11 @@ import { DivIcon, Icon, LatLngExpression } from "leaflet"
 import React, { useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import styled from "styled-components"
-import Button from "../button/Button"
+import Button from "../../button/Button"
 
-const PersonMarker = ({ position, numPerson=1, color=null}: { position: LatLngExpression, numPerson: number, color?: string | null }) => <>
+const PersonMarker = (
+    { position, numPerson=1, color=null, unsanctioned=false}: 
+        { position: LatLngExpression, numPerson: number, color?: string | null, unsanctioned?: boolean }) => <>
     {color ? <Marker position={position} icon={new Icon({
         iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
         // shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -13,12 +15,9 @@ const PersonMarker = ({ position, numPerson=1, color=null}: { position: LatLngEx
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     })}>
-        <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
     </Marker> : null}
     <Marker position={position} icon={new Icon({
-        iconUrl: require(`./people${numPerson}.png`),
+        iconUrl: require(`./assets/${unsanctioned ? "peopleRed" : "peopleRegular"}/people${numPerson}.png`),
         // shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [40, 60],
         iconAnchor: [20, 40],

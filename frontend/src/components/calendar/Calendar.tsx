@@ -73,7 +73,9 @@ const Calendar = ({ allNeeds, allHaves }: PropTypes) => {
         const itemDate = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
         const content = toDisplay.filter(i => datesAreEqual(i.expiry, itemDate))
         dayObjects.push(<Day 
-            day={day} key={day + "-" + content.length} 
+            showOnlyNeeds={showOnlyNeeds}
+            day={new Date(displayYear, displayMonth, day) }
+            dayNumber={day} key={day + "-" + content.length} 
             isToday={datesAreEqual(todaysDate, itemDate)}
             content={content}
         />)

@@ -13,6 +13,7 @@
     "@types/styled-components": "^5.1.24",
     "axios": "^0.26.1",
     "leaflet": "^1.7.1",
+    "leaflet-polylinedecorator": "^1.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",

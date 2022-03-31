@@ -21,6 +21,7 @@ const ButtonWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 5px;
     font-size: ${(p: ButtonTypes) => p.small ? "0.8em" : "1em"};
     box-sizing: border-box;
     user-select: none;

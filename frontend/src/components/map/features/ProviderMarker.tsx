@@ -2,7 +2,7 @@ import { DivIcon, Icon, LatLngExpression } from "leaflet"
 import React, { useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import styled from "styled-components"
-import Button from "../button/Button"
+import Button from "../../button/Button"
 
 const ProviderMarker = ({ position, color = null }: { position: LatLngExpression, color?: string | null }) => <>
     {color ? <Marker position={position} icon={new Icon({
@@ -18,10 +18,10 @@ const ProviderMarker = ({ position, color = null }: { position: LatLngExpression
         </Popup>
     </Marker> : null}
     <Marker position={position} icon={new Icon({
-        iconUrl: require(`./House.png`),
+        iconUrl: require(`./assets/House.png`),
         // shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [35, 40],
-        iconAnchor: [15, 45],
+        iconAnchor: [17, 35],
         popupAnchor: [1, -34],
         shadowSize: [41, 41]
     })}>

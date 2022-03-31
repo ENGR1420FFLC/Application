@@ -13,7 +13,8 @@ const ItemWrapper = styled.div(({ theme, selected }: { theme:any, selected: bool
     display: grid;
     grid-template-columns: 75px 100px 150px 75px auto 125px 75px 50px;
     grid-gap: 5px;
-    border: 1px solid ${selected ? theme.accentColor : theme.complementColor};
+    border: 1px solid ${theme.complementColor};
+    background-color: ${selected ? theme.complementColor : "none"};
     border-radius: 5px;
     padding: 10px;
 `)
@@ -42,7 +43,7 @@ const DeleteWrapper = styled.div`
     justify-self: end;
 `
 
-const Status = styled.div(({ status }: { status: number }) => `
+export const Status = styled.div(({ status }: { status: number }) => `
     background-color: ${status === 2 ? BaseTheme.validColor
         : status === 1 ? BaseTheme.midColor
             : BaseTheme.invalidColor
@@ -67,7 +68,7 @@ const Gap = styled.div`display: flex; gap: 5px; align-items: center;`
 
 const TableItem = ({ item, remove, isUser }: { item: Have | Need, remove: () => void, isUser: boolean }) => {
     return <ItemWrapper selected={isUser}>
-        <Field>{isUser ? "" : <Button content={"Request"} onClick={remove} small/>}</Field>
+        <Field>{isUser ? "" : <Button content={"Match"} onClick={remove} small/>}</Field>
 
         <Field><Button content={
             <Gap>

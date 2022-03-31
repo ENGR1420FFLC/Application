@@ -7,6 +7,7 @@ const SliderWrapper = styled.div`
     display: flex;
     gap: 5px;
     position: relative;
+    font-size: 0.85em;
 `
 
 interface SliderThumbTypes {
@@ -18,7 +19,7 @@ interface SliderThumbTypes {
 const SliderThumb = styled.div`
     background-color: ${(p: SliderThumbTypes) => p.selected ? (p.color ? p.color : p.theme.accentColor) : "none"};
     color: ${(p: SliderThumbTypes) => p.selected ? p.theme.invertedTextColor : p.theme.textColor};
-    padding: 5px;
+    padding: 4.5px;
     border-radius: 5px;
     
     &:hover {

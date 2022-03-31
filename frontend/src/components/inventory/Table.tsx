@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import Have from "../../services/models/Have"
 import Button from "../button/Button"
-import { FaTrash } from "react-icons/fa"
+import { FaPlus, FaTrash } from "react-icons/fa"
 import BaseTheme from "../../themes/BaseTheme"
 import TableItem from "./TableItem"
 import TableHeader from "./TableHeader"
@@ -10,6 +10,7 @@ import { Header, HeaderWrapper } from "../textStyles/TextStyles"
 import Slider from "../slider/Slider"
 import mongoose from "mongoose"
 import Need from "../../services/models/Need"
+import Dropdown from "../dropdown/Dropdown"
 
 type PropTypes = {
     name: string
@@ -40,6 +41,7 @@ const Table = ({ name, userLocation, allItems, setAllItems }: PropTypes) => {
         <>
             <HeaderWrapper>
                 <Header>{name}</Header>
+                Show <Dropdown currentState="Next 30 days" possibleStates={["TEST"]} setState={() => null} />
                 <Slider value={showOnlyRecurring} setValue={setShowOnlyRecurring} trueContent="Recurring" falseContent="All types" />
                 <Slider value={showOnlyUser} setValue={setShowOnlyUser} trueContent="Yours" falseContent="Everyones" />
             </HeaderWrapper>
@@ -50,6 +52,7 @@ const Table = ({ name, userLocation, allItems, setAllItems }: PropTypes) => {
                     item={h}
                     remove={removeItem(h)} 
                     isUser={h.location.equals(userLocation)}/>)}
+                    <Button content={<><FaPlus />Add Item</>} onClick={() => null} />
             </ItemsWrapper>
         </>
     )

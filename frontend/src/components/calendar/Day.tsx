@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Item from "../../services/models/Item";
 import Table from "../inventory/Table";
-import Popup from "../popup/Popup";
+import TableItem from "../inventory/TableItem";
+import PopupMsg from "../popupmsg/PopupMsg";
 import { Header, HeaderWrapper } from "../textStyles/TextStyles";
-import SmallItem from "./SmallItem";
+import DayPopup from "./DayPopup";
+import SmallItem from "../inventory/SmallItem";
 
 const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday: boolean, offset: number }) => `
     flex: 0 0 14%;
@@ -60,22 +62,19 @@ const DayBubble = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     border-radius: 100%;
 `)
 
-const Day = ({ day, offset = 0, isToday, content }: { day: number, offset?: number, isToday?: boolean, content: Array<Item> }) => {
+const Day = ({ showOnlyNeeds, day, dayNumber, offset = 0, isToday, content }: { showOnlyNeeds: boolean, day: Date, dayNumber: number, offset?: number, isToday?: boolean, content: Array<Item> }) => {
 
     const [showPopup, setShowPopup] = useState(false)
 
     return (
-        <DayWrapper offset={offset} isToday={isToday || false} onClick={() => setShowPopup(true)}>
-            <DayBubble isToday={isToday || false}>{day}</DayBubble>
+        <>
+            <DayWrapper offset={offset} isToday={isToday || false} onClick={() => setShowPopup(true)}>
+                <DayBubble isToday={isToday || false}>{dayNumber}</DayBubble>
+                {content.map(i => <SmallItem item={i} key={i.id.toString()}/>)}
+            </DayWrapper>
 
-            {content.map(i => <SmallItem item={i} key={i.id.toString()}/>)}
-
-            {/* {showPopup ? 
-                <Popup close={() => setShowPopup(false)}>
-                    <Table key="i" name="Inventory" allItems={content} setAllItems={() => null} userLocation={new mongoose.Types.ObjectId()} />
-                </Popup>
-            : ""} */}
-        </DayWrapper>
+            <DayPopup showOnlyNeeds={showOnlyNeeds} day={day} content={content} show={showPopup} setShow={setShowPopup}/>
+        </>
     )
 }
 
