@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Backend for FFLC Website",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  },
+    "scripts": {
+        "build:ui": "rm -r ./build && cd ../frontend && npm run build && mv build ../backend",
+        "dev": "nodemon -r dotenv/config index.js"
+    },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ENGR1420FFLC/Application.git"

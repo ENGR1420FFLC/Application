@@ -6,6 +6,8 @@ const Location = require('./models/location')
 const Have = require('./models/have')
 const Need = require('./models/need')
 
+app.use(express.static('build'))
+
 app.get('/api', (request, response) => {
   response.json({content: "this is"})
 });
