@@ -38,8 +38,9 @@ type PropTypes = {
     setCurrentPage: React.Dispatch<Pages>
 }
 
-const Navbar = ({ currentPage, setCurrentPage }: PropTypes) => {
 
+
+const Navbar = ({ currentPage, setCurrentPage }: PropTypes) => {
 
     return( 
         <NavWrapper>

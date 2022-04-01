@@ -5,8 +5,13 @@ body {
 }
 
 .leaflet-container {
-    width: 100%;
-    padding-top: 60%;
+    margin: 0 auto;
+    width: 90%;
+    padding-top: 55%;
     border-radius: 5px;
     border: 1px solid #e2e2e2;
+}
+
+html {
+    overflow-y:scroll;
 }

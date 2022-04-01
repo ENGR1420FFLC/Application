@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import CalendarService from "../../services/CalendarService"
 import Button from "../button/Button"
-import CalendarEvent from "./CalendarEvent"
 import Day from "./Day"
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { Header, HeaderWrapper } from "../textStyles/TextStyles";
+import Need from "../../services/models/Need";
+import Have from "../../services/models/Have";
+import Slider from "../slider/Slider";
 
 const CalendarWrapper = styled.div`
     border-radius: 5px;
@@ -12,7 +14,7 @@ const CalendarWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 10px;
+    padding: 0 10px;
     width: 100%;
     box-sizing: border-box;
 `
@@ -26,25 +28,8 @@ const DaysWrapper = styled.div`
 
 const DaysHeader = styled(DaysWrapper)`
     color: ${p => p.theme.darkenedNeutralColor};
-    text-align: center;
-`
-
-const Header = styled.div`
-    font-family: ${p => p.theme.headingFontFamily};
     font-weight: 800;
     text-align: center;
-    font-size: 2em;
-    margin-left: auto;
-`
-
-const HeaderWrapper = styled.div`
-    position: relative;
-    font-family: ${p => p.theme.bodyFontFamily};
-    border-bottom: 1px solid ${p => p.theme.complementColor};
-    padding-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 `
 
 enum Days {
@@ -55,30 +40,45 @@ enum Months {
     January, February, March, April, May, June, July, August, September, October, November, December
 }
 
-const Calendar = () => {
+type PropTypes = {
+    allNeeds: Array<Need>
+    allHaves: Array<Have>
+}
 
-    const empty: Array<CalendarEvent> = []
-    const [allEvents, setAllEvents] = useState(empty)
+const Calendar = ({ allNeeds, allHaves }: PropTypes) => {
+
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
     const [todaysDate, setTodaysDate] = useState(new Date())
 
-    useEffect(() => {
-        CalendarService.getEvents().then(events => setAllEvents(events))
-    }, [])
+    const [showOnlyNeeds, setShowOnlyNeeds] = useState(true)
+    const [showOnlyRecurring, setShowOnlyRecurring] = useState(false)
+
+    let toDisplay = showOnlyNeeds ? allNeeds : allHaves
+    toDisplay = showOnlyRecurring ? toDisplay.filter(h => h.recurring) : toDisplay
 
     const numDays = new Date(displayYear, displayMonth + 1, 0).getDate()
     const firstDayOffset = new Date(displayYear, displayMonth, 1).getDay()
     
     const dayObjects = []
-    dayObjects.push(<Day day={1} key={1} offset={firstDayOffset}/>)
+    for (let i = 0; i < firstDayOffset; i++) dayObjects.push(<div key={i + "!"}></div>)
 
-    for (let day = 2; day <= numDays; day++) {
-        dayObjects.push(<Day day={day} key={day} isToday={
-            todaysDate.getFullYear() === displayYear &&
-            todaysDate.getMonth() === displayMonth &&
-            todaysDate.getDate() === day
-        }/>)
+    const datesAreEqual = (d1: Date, d2: Date) => {
+        return d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate()
+    }
+
+    for (let day = 1; day <= numDays; day++) {
+        const itemDate = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
+        const content = toDisplay.filter(i => datesAreEqual(i.expiry, itemDate))
+        dayObjects.push(<Day 
+            showOnlyNeeds={showOnlyNeeds}
+            day={new Date(displayYear, displayMonth, day) }
+            dayNumber={day} key={day + "-" + content.length} 
+            isToday={datesAreEqual(todaysDate, itemDate)}
+            content={content}
+        />)
     }
 
     const incrementMonth = () => {
@@ -102,22 +102,27 @@ const Calendar = () => {
     }
 
     return (
-        <CalendarWrapper>
-
+        <>
             <HeaderWrapper>
+                <Header>{Months[displayMonth]} {displayYear}</Header>
+
                 <Button content={<FaArrowLeft />} onClick={decrementMonth} />
                 <Button content={<FaArrowRight />} onClick={incrementMonth} />
                 <Button content="Today" onClick={resetDate} />
-                <Header>{Months[displayMonth]} {displayYear}</Header>
+
+                <Slider value={showOnlyRecurring} setValue={setShowOnlyRecurring} trueContent="Recurring" falseContent="All types" />
+                <Slider value={showOnlyNeeds} setValue={setShowOnlyNeeds} trueContent="Needs" falseContent="Haves" />
             </HeaderWrapper>
 
-            <DaysHeader>
-                {dayHeaders}
-            </DaysHeader>
-            <DaysWrapper>
-                {dayObjects}
-            </DaysWrapper>
-        </CalendarWrapper>
+            <CalendarWrapper>
+                <DaysHeader>
+                    {dayHeaders}
+                </DaysHeader>
+                <DaysWrapper>
+                    {dayObjects}
+                </DaysWrapper>
+            </CalendarWrapper>
+        </>
     )
 }
 
