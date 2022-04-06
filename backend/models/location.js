@@ -3,7 +3,7 @@ const mongoose = require('./connection');
 const locationSchema = new mongoose.Schema({
   longitude: Number,
   latitude: Number,
-  num_people: Number,
+  numPeople: Number,
   expiration: Date,
 })
 
