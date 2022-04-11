@@ -7,7 +7,7 @@ type Connection = {
     toId: mongoose.Types.ObjectId,
     description: string,
     date: Date
-    allergenInformation: String,
+    allergenInformation: string,
 }
 
 export default Connection
