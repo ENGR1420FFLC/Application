@@ -1,3 +1,4 @@
+const { stringify } = require('querystring');
 const mongoose = require('./connection');
 
 const locationSchema = new mongoose.Schema({
@@ -5,6 +6,8 @@ const locationSchema = new mongoose.Schema({
   latitude: Number,
   numPeople: Number,
   expiration: Date,
+  identity:String,
+  name:String,
 })
 
 locationSchema.set('toJSON', {
