@@ -92,7 +92,7 @@ app.post('/api/locations', (request, response) => {
   })
 })
 
-app.post('/api/events', (request, response) => {
+app.post('/api/connections', (request, response) => {
   const body = request.body
 
   if (body.name === undefined || body.start === undefined || body.repeat === undefined || body.fromId === undefined || body.toId === undefined || body.description === undefined || body.allergenInformation === undefined) {
@@ -184,13 +184,14 @@ app.post('/api/events', (request, response) => {
   })
 })
 
-app.get('/api/events', (request, response) => {
-  const body = request.body
-  
-  if (body.month === undefined) {
+app.get('/api/connections', (request, response) => {
+  const params = request.query
+console.log(request.query)
+  if (params.month === undefined) {
     return response.status(400).json({error: 'month missing'})
   }
-  month = Number(body.month)
+
+  month = Number(params.month)
   day1 = new Date(Date.UTC(2022, month - 1, 1))
   day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
   Connection.find({}).then(events => {

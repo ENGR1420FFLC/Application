@@ -12,6 +12,8 @@ import ContentWrapper from './components/ContentWrapper';
 import { Pages } from './Pages';
 import Location from './services/models/Location';
 import Connection from './services/models/Connection';
+import Service from './services/Service';
+import ConnectionConstructor from './services/models/ConnectionConstructor';
 
 
 const App = () => {
@@ -20,13 +22,15 @@ const App = () => {
 
     const emptyLocations: Location[] = []
     const [locations, setLocations] = useState(emptyLocations)
-    const [myLocation, setMyLocation] = useState(null)
 
-    const emptyConnections: Connection[] = []
-    const [connections, setConnections] = useState(emptyConnections)
+    const emptyConnectionConstructors: ConnectionConstructor[] = []
+    const [connectionConstructors, setConnectionConstructors] = useState(emptyConnectionConstructors)
 
     useEffect(() => {
-        //
+        Service.getAllLocations()
+            .then(data => {setLocations(data); console.log(data)})
+        Service.getAllConnectionConstructors()
+            .then(data => { setConnectionConstructors(data); console.log(data) })
     }, [])
     
 
@@ -39,10 +43,16 @@ const App = () => {
             content = <Map/>
             break
         case Pages.CONNECTIONS:
-            content = <Table key="i" name="Connections" connections={connections} myLocation={myLocation}/>
+            content = <Table 
+                name="Connections" 
+                connectionConstructors={connectionConstructors}
+                locations={locations}/>
             break
         case Pages.CALENDAR:
-            content = <Calendar connections={connections}/>
+            content = <Calendar 
+                connectionConstructors={connectionConstructors}
+                locations={locations}
+                />
             break
     }
 
