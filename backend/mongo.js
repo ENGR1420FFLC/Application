@@ -9,7 +9,7 @@ const Need = require('./models/need')
 //   num_people: 0,
 //   expiration: new Date()
 // })
-
+/*
 Location.find({latitude: 0}).then(location => {
   console.log(location[0])
   console.log(location[0]._id)
@@ -31,3 +31,4 @@ Location.find({latitude: 0}).then(location => {
     })
   }
 })
+*/
