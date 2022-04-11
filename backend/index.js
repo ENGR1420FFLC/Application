@@ -5,6 +5,7 @@ const Location = require('./models/location')
 const Connection = require('./models/event')
 const { RRule, RRuleSet, rrulestr } = require('rrule')
 const e = require('express')
+const url = require('url');
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -184,17 +185,17 @@ app.post('/api/events', (request, response) => {
   })
 })
 
-app.get('/api/events', (request, response) => {
-  const body = request.body
+app.get('/api/events/:month', (request, response) => {
+  const month = request.params.month
   
-  if (body.month === undefined) {
+  if (month === undefined) {
     Connection.find({}).then(events => {
       response.json({
         events: events
       })
     })
   }
-  month = Number(body.month)
+  month = Number(month)
   day1 = new Date(Date.UTC(2022, month - 1, 1))
   day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
   Connection.find({}).then(events => {
