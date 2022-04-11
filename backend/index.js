@@ -182,6 +182,32 @@ app.post('/api/events', (request, response) => {
   })
 })
 
+app.get('/api/events', (request, response) => {
+  const body = request.body
+  
+  if (body.month === undefined) {
+    return response.status(400).json({error: 'month missing'})
+  }
+  month = Number(body.month)
+  day1 = new Date(Date.UTC(2022, month - 1, 1))
+  day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
+  Event.find({}).then(events => {
+    result = []
+    for (e of events) {
+      dates = rrulestr(e.rrule).between(day1, day2, inc=true)
+      for (date of dates) {
+        result.push({
+          event_name: e.event_name,
+          date: date
+        })
+      }
+    }
+    response.json({
+      events: result
+    })
+  })
+})
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
