@@ -5,12 +5,11 @@ const FoodDelivery = require('./models/food_delivery')
 const Location = require('./models/location')
 const Have = require('./models/have')
 const Need = require('./models/need')
+const Event = require('./models/event')
+const { RRule, RRuleSet, rrulestr } = require('rrule')
 
-<<<<<<< HEAD
 app.use(express.static('build'))
-=======
 app.use(express.json())
->>>>>>> dev
 
 app.get('/api', (request, response) => {
   response.json({content: "this is"})
@@ -76,9 +75,6 @@ app.get('/api/locations', (request, response) => {
   })
 })
 
-<<<<<<< HEAD
-const PORT = process.env.PORT || 3001
-=======
 app.post('/api/locations', (request, response) => {
   const body = request.body
 
@@ -98,9 +94,95 @@ app.post('/api/locations', (request, response) => {
   })
 })
 
+app.post('/api/events', (request, response) => {
+  const body = request.body
+
+  if (body.event_name === undefined || body.event_start === undefined || body.repeat === undefined) {
+    return response.status(400).json({error: 'field missing'})
+  }
+
+  const rruleSet = new RRuleSet()
+
+  if (body.repeat === "none") {
+    rruleSet.rrule(new RRule({
+      dtstart: new Date(body.event_start),
+      count: 1,
+    }))
+  }
+
+  else {
+    const weekly = body.weekly
+    if (weekly[0] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.SU,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[1] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.MO,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[2] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.TU,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[3] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.WE,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[4] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.TH,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[5] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.FR,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[6] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.SA,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+    if (weekly[7] === 1) {
+      rruleSet.rrule(new RRule({
+        freq: RRule.MONTHLY,
+        byweekday: RRule.SU,
+        dtstart: new Date(body.event_start),
+      }))
+    }
+  }
+
+  const rruleString = rrulestr(rruleSet.toString())
+
+  const event = new Event({
+    event_name: body.event_name,
+    rrule: rruleString,
+  })
+
+  event.save().then(savedEvent => {
+    response.json(savedEvent)
+  })
+})
 
 const PORT = process.env.PORT
->>>>>>> dev
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
