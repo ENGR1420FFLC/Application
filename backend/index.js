@@ -198,6 +198,7 @@ app.get('/api/events', (request, response) => {
       for (date of dates) {
         result.push({
           event_name: e.event_name,
+          data: e,
           date: date
         })
       }
