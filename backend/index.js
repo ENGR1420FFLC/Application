@@ -93,7 +93,7 @@ app.post('/api/locations', (request, response) => {
   })
 })
 
-app.post('/api/connections', (request, response) => {
+app.post('/api/events', (request, response) => {
   const body = request.body
 
   if (body.name === undefined || body.start === undefined || body.repeat === undefined || body.fromId === undefined || body.toId === undefined || body.description === undefined || body.allergenInformation === undefined) {
