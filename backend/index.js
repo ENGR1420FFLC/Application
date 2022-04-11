@@ -189,12 +189,8 @@ app.get('/api/events', (request, response) => {
   
   if (body.month === undefined) {
     Connection.find({}).then(events => {
-      result = []
-      for (e of events) {
-        result.push(e)
-      }
       response.json({
-        events: result
+        events: events
       })
     })
   }
