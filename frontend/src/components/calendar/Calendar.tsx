@@ -4,14 +4,13 @@ import Button from "../UI/button/Button"
 import Day from "./Day"
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { Header, HeaderWrapper } from "../textStyles/TextStyles";
-import Need from "../../services/models/Need";
-import Have from "../../services/models/Have";
-import Slider from "../UI/slider/Slider";
 import Connection from "../../services/models/Connection";
+import ConnectionConstructor from "../../services/models/ConnectionConstructor";
+import Location from "../../services/models/Location";
+
 
 const CalendarWrapper = styled.div`
     border-radius: 5px;
-    /* background-color: ${p => p.theme.complementColor}; */
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -42,10 +41,14 @@ enum Months {
 }
 
 type PropTypes = {
-    connections: Connection[]
+    connectionConstructors: ConnectionConstructor[]
+    locations: Location[]
 }
 
-const Calendar = ({ connections }: PropTypes) => {
+const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
+
+    const emptyConnections: Connection[] = []
+    const [connections, setConnections] = useState(emptyConnections)
 
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())

@@ -1,11 +1,6 @@
-import mongoose from "mongoose";
+import ConnectionConstructor from "./ConnectionConstructor";
 
-type Connection = {
-    id: mongoose.Types.ObjectId,
-    fromId: mongoose.Types.ObjectId,
-    toId: mongoose.Types.ObjectId,
-    name: string,
-    description: string,
+type Connection = ConnectionConstructor & {
     date: Date
 <<<<<<< HEAD
     allergenInformation: string,

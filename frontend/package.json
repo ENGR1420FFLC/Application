@@ -23,6 +23,7 @@
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://localhost:3002",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/leaflet": "^1.7.9",
     "bson": "^4.6.2",
     "mongoose": "^6.2.9"

@@ -1,24 +1,28 @@
-import mongoose from "mongoose"
+import axios from "axios"
 import Connection from "./models/Connection"
+import ConnectionConstructor from "./models/ConnectionConstructor"
 import Location from "./models/Location"
-const { RRule, RRuleSet, rrulestr } = require('rrule')
-const axios = require('axios')
-
-enum ItemTypes {
-    HAVE, NEED
-}
-
-const allConnections: Connection[] = []
-const allLocations: Location[] = []
 
 const getAllLocations = (): Promise<Location[]> => {
     return axios.get('/api/locations')
+        .then((data: { data: any }) => data.data)
 }
 
-const getAllConnection = (): Promise<Connection[]> => {
-    return axios.get('/api/events')
+const getConnections = (month: number): Promise<Connection[]> => {
+
+    const config = {
+        params: { month: month }
+    }
+
+    return axios.get('/api/connections', config)
+        .then((data: { data: any }) => data.data)
 }
 
-const Service = { getAllLocations, getAllConnection }
+const getAllConnectionConstructors = (): Promise<ConnectionConstructor[]> => {
+    return axios.get('/api/connections')
+        .then((data: { data: any }) => data.data)
+}
+
+const Service = { getAllLocations, getConnections, getAllConnectionConstructors }
 
 export default Service
