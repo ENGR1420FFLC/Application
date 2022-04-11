@@ -1,11 +1,15 @@
 const mongoose = require('./connection');
 
-const eventSchema = new mongoose.Schema({
-  event_name: String,
+const connectionSchema = new mongoose.Schema({
+  name: String,
+  fromId: mongoose.Types.ObjectId,
+  toId: mongoose.Types.ObjectId,
+  description: String,
+  allergenInformation: String,
   rrule: String,
 })
 
-eventSchema.set('toJSON', {
+connectionSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -13,4 +17,4 @@ eventSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Event', eventSchema)
+module.exports = mongoose.model('Connection', connectionSchema)
