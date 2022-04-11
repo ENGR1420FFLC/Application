@@ -186,9 +186,9 @@ app.post('/api/events', (request, response) => {
 })
 
 app.get('/api/events/:month', (request, response) => {
-  const month = request.params.month
-  
-  if (month === undefined) {
+  let month = request.params.month
+  console.log("MONTH:" + month)
+  if (month === "month") {
     Connection.find({}).then(events => {
       response.json({
         events: events
@@ -200,7 +200,7 @@ app.get('/api/events/:month', (request, response) => {
   day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
   Connection.find({}).then(events => {
     result = []
-    for (e of events) {
+    for (let e of events) {
       dates = rrulestr(e.rrule).between(day1, day2, inc=true)
       for (date of dates) {
         result.push({
