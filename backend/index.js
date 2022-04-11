@@ -173,7 +173,7 @@ app.post('/api/events', (request, response) => {
   const event = new Connection({
     name: body.name,
     fromId: body.fromId,
-    toId: body.ToId,
+    toId: body.toId,
     description: body.description,
     allergenInformation: body.allergenInformation,
     rrule: rruleString,
