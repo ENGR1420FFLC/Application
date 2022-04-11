@@ -10,7 +10,7 @@ import {
 } from 'react-leaflet'
 import React, { useState } from "react"
 import styled from "styled-components"
-import Button from "../../button/Button"
+import Button from "../../UI/button/Button"
 import { LatLngExpression } from 'leaflet'
 
 

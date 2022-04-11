@@ -5,9 +5,10 @@ import styled from "styled-components";
 import Have from "../../services/models/Have";
 import Need from "../../services/models/Need";
 import BaseTheme from "../../themes/BaseTheme";
-import Button from "../button/Button";
-import TableItem, { Status } from "../inventory/TableItem";
-import PopupMsg from "../popupmsg/PopupMsg";
+import Button from "../UI/button/Button";
+import TableItem, { Status } from "../table/TableItem";
+import PopupMsg from "../UI/popupmsg/PopupMsg";
+import Connection from "../../services/models/Connection";
 
 const Wrapper = styled.div`
     display: flex;
@@ -55,13 +56,19 @@ const SmallItem = ({ item, isUser }: { item: Have | Need, isUser: boolean }) => 
 </ItemWrapper>
 
 const DayPopup = (
-    { showOnlyNeeds, day, content, show, setShow } : 
-    { showOnlyNeeds: boolean, day: Date, content: Array<Need | Have>, show: boolean, setShow: React.Dispatch<boolean>}) => 
+    { day, connections, show, setShow } : 
+    { day: Date, connections: Connection[], show: boolean, setShow: React.Dispatch<boolean>}) => 
     <PopupMsg title={
-        `${day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}: ${showOnlyNeeds ? "Needs" : "Haves"}`
+        `${day.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
     } content={
     <Wrapper>
-            {content.map(i => <SmallItem item={i} key={i.id.toString()} isUser={false} />)}
+            {connections.map(connection => <div key={connection.id.toString()}>
+                Name: {connection.name}
+                Date: {connection.date}
+                Description: {connection.description}
+                From: {connection.fromId}
+                To: {connection.toId}
+            </div>)}
     </Wrapper>
 } show={show} setShow={setShow} />
 

@@ -1,16 +1,15 @@
-import L, { DivIcon, Icon } from "leaflet"
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
+import { Icon } from "leaflet"
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet'
 import styled from "styled-components"
-import Button from "../button/Button"
+import Button from "../UI/button/Button"
 import PersonMarker from "./features/PersonMarker"
 import ProviderMarker from "./features/ProviderMarker"
 import Arrow from "./features/Arrow"
 import { HeaderWrapper, Header } from "../textStyles/TextStyles"
 import { FaPlus } from "react-icons/fa"
-import Slider from "../slider/Slider"
-import Dropdown from "../dropdown/Dropdown"
+import Slider from "../UI/slider/Slider"
+import Dropdown from "../UI/dropdown/Dropdown"
 import { useState } from "react"
-import PopupMsg from "../popupmsg/PopupMsg"
 import UnsanctionedPopup from "./UnsanctionedPopup"
 
 const Wrapper = styled.div`
@@ -42,15 +41,8 @@ const Map = () => {
                 <Header>
                     Map
                 </Header>
-                <Button content={<><FaPlus />Add Unsanctioned Site</>} onClick={() => setShowAddSite(true)} />
-            </HeaderWrapper>
-
-            <HeaderWrapper>
-                <Header>
-                </Header>
                 Show <Dropdown currentState="Next 30 days" possibleStates={["TEST"]} setState={() => null} />
-                <Slider value={true} setValue={() => null} trueContent="All Locations" falseContent="Only Unsanctioned" />
-                <Slider value={true} setValue={() => null} trueContent="All connections" falseContent="One-time connections" />
+                <Dropdown currentState="All Locations" possibleStates={["TEST"]} setState={() => null} />
             </HeaderWrapper>
 
             <UnsanctionedPopup show={showAddSite} setShow={setShowAddSite}/>
@@ -86,7 +78,8 @@ const Map = () => {
                 <Arrow start={[44.0361, -123.1090]} end={[44.0381, -123.0990]} />
                 <PersonMarker position={[44.0421, -123.0968]} numPerson={2} unsanctioned/>
             </MapContainer>
-
+            <br />
+            <Button content={<><FaPlus />Add Unsanctioned Site</>} onClick={() => setShowAddSite(true)} />
         </>
     )
 }

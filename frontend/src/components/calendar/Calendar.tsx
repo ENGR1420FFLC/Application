@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-import Button from "../button/Button"
+import Button from "../UI/button/Button"
 import Day from "./Day"
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { Header, HeaderWrapper } from "../textStyles/TextStyles";
 import Need from "../../services/models/Need";
 import Have from "../../services/models/Have";
-import Slider from "../slider/Slider";
+import Slider from "../UI/slider/Slider";
+import Connection from "../../services/models/Connection";
 
 const CalendarWrapper = styled.div`
     border-radius: 5px;
@@ -41,21 +42,14 @@ enum Months {
 }
 
 type PropTypes = {
-    allNeeds: Array<Need>
-    allHaves: Array<Have>
+    connections: Connection[]
 }
 
-const Calendar = ({ allNeeds, allHaves }: PropTypes) => {
+const Calendar = ({ connections }: PropTypes) => {
 
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
-    const [todaysDate, setTodaysDate] = useState(new Date())
-
-    const [showOnlyNeeds, setShowOnlyNeeds] = useState(true)
-    const [showOnlyRecurring, setShowOnlyRecurring] = useState(false)
-
-    let toDisplay = showOnlyNeeds ? allNeeds : allHaves
-    toDisplay = showOnlyRecurring ? toDisplay.filter(h => h.recurring) : toDisplay
+    const [todaysDate, ] = useState(new Date())
 
     const numDays = new Date(displayYear, displayMonth + 1, 0).getDate()
     const firstDayOffset = new Date(displayYear, displayMonth, 1).getDay()
@@ -70,14 +64,13 @@ const Calendar = ({ allNeeds, allHaves }: PropTypes) => {
     }
 
     for (let day = 1; day <= numDays; day++) {
-        const itemDate = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
-        const content = toDisplay.filter(i => datesAreEqual(i.expiry, itemDate))
+        const date = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
+        const content = connections.filter(connection => datesAreEqual(connection.date, date))
         dayObjects.push(<Day 
-            showOnlyNeeds={showOnlyNeeds}
-            day={new Date(displayYear, displayMonth, day) }
-            dayNumber={day} key={day + "-" + content.length} 
-            isToday={datesAreEqual(todaysDate, itemDate)}
-            content={content}
+            day={date}
+            key={date.toString()} 
+            isToday={datesAreEqual(todaysDate, date)}
+            connections={content}
         />)
     }
 
@@ -105,13 +98,9 @@ const Calendar = ({ allNeeds, allHaves }: PropTypes) => {
         <>
             <HeaderWrapper>
                 <Header>{Months[displayMonth]} {displayYear}</Header>
-
                 <Button content={<FaArrowLeft />} onClick={decrementMonth} />
                 <Button content={<FaArrowRight />} onClick={incrementMonth} />
                 <Button content="Today" onClick={resetDate} />
-
-                <Slider value={showOnlyRecurring} setValue={setShowOnlyRecurring} trueContent="Recurring" falseContent="All types" />
-                <Slider value={showOnlyNeeds} setValue={setShowOnlyNeeds} trueContent="Needs" falseContent="Haves" />
             </HeaderWrapper>
 
             <CalendarWrapper>

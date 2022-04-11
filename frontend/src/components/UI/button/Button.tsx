@@ -15,8 +15,8 @@ const ButtonWrapper = styled.div`
             (p.theme.neutralColor) : 
             (p.color ? p.color : p.theme.accentColor)
         };
-    padding: 0.5em;
-    border-radius: 5px;
+    height: 40px;
+    padding: 0 15px;
     border: 1px solid ${(p: ButtonTypes) => p.selected ? p.theme.accentColor : p.theme.complementColor};
     display: flex;
     justify-content: center;
@@ -26,11 +26,11 @@ const ButtonWrapper = styled.div`
     box-sizing: border-box;
     user-select: none;
     font-family: ${(p: ButtonTypes) => p.theme.bodyFontFamily};
-
+    cursor: ${(p: ButtonTypes) => p.disabled ? "not-allowed" : "pointer"};
+    
     &:hover {
-        box-sizing: border-box;
         border: 1px solid ${(p: ButtonTypes) => p.disabled ? p.theme.complementColor : (p.color ? p.color : p.theme.accentColor) };
-        cursor: ${(p: ButtonTypes) => p.disabled ? "not-allowed" : "pointer"};
+        
     }
 `
 

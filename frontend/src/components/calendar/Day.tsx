@@ -1,17 +1,10 @@
-import mongoose from "mongoose";
 import React, { useState } from "react";
 import styled from "styled-components";
-import Item from "../../services/models/Item";
-import Table from "../inventory/Table";
-import TableItem from "../inventory/TableItem";
-import PopupMsg from "../popupmsg/PopupMsg";
-import { Header, HeaderWrapper } from "../textStyles/TextStyles";
 import DayPopup from "./DayPopup";
-import SmallItem from "../inventory/SmallItem";
+import Connection from "../../services/models/Connection";
 
 const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday: boolean, offset: number }) => `
     flex: 0 0 14%;
-    border-radius: 5px;
     border: 1px solid ${isToday ? theme.accentColor : theme.complementColor};
     box-sizing: border-box;
     height: 120px;
@@ -62,18 +55,31 @@ const DayBubble = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     border-radius: 100%;
 `)
 
-const Day = ({ showOnlyNeeds, day, dayNumber, offset = 0, isToday, content }: { showOnlyNeeds: boolean, day: Date, dayNumber: number, offset?: number, isToday?: boolean, content: Array<Item> }) => {
+type PropTypes = { 
+    day: Date, 
+    offset?: number, 
+    isToday: boolean, 
+    connections: Connection[]
+}
+
+const Day = ({ day, offset = 0, isToday, connections }: PropTypes) => {
 
     const [showPopup, setShowPopup] = useState(false)
 
     return (
         <>
-            <DayWrapper offset={offset} isToday={isToday || false} onClick={() => setShowPopup(true)}>
-                <DayBubble isToday={isToday || false}>{dayNumber}</DayBubble>
-                {content.map(i => <SmallItem item={i} key={i.id.toString()}/>)}
+            <DayWrapper offset={offset} isToday={isToday} onClick={() => setShowPopup(true)}>
+                <DayBubble isToday={isToday}>{day.getDate()}</DayBubble>
+                {connections.map(connection => <div key={connection.id.toString()}>
+                    Name: {connection.name}
+                    Date: {connection.date}
+                    Description: {connection.description}
+                    From: {connection.fromId}
+                    To: {connection.toId}
+                </div>)}
             </DayWrapper>
 
-            <DayPopup showOnlyNeeds={showOnlyNeeds} day={day} content={content} show={showPopup} setShow={setShowPopup}/>
+            <DayPopup day={day} connections={connections} show={showPopup} setShow={setShowPopup}/>
         </>
     )
 }

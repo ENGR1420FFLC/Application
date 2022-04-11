@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import Button from "../button/Button";
 import { FaTimes } from "react-icons/fa"
-import { Header, HeaderWrapper } from "../textStyles/TextStyles";
+import { Header, HeaderWrapper } from "../../textStyles/TextStyles";
 
 const Dim = styled.div`
     position: fixed;
@@ -21,7 +21,6 @@ const PopupWrapper = styled.div`
     background-color: ${p => p.theme.neutralColor};
     padding: 10px;
     width: 600px;
-    border-radius: 5px;
     border: 1px solid ${p => p.theme.complementColor};
 `
 
