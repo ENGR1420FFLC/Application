@@ -188,7 +188,15 @@ app.get('/api/events', (request, response) => {
   const body = request.body
   
   if (body.month === undefined) {
-    return response.status(400).json({error: 'month missing'})
+    Connection.find({}).then(events => {
+      result = []
+      for (e of events) {
+        result.push(e)
+      }
+      response.json({
+        events: result
+      })
+    })
   }
   month = Number(body.month)
   day1 = new Date(Date.UTC(2022, month - 1, 1))
