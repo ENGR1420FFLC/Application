@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
-type FoodDelivery = {
+type Connection = {
     id: mongoose.Types.ObjectId,
-    needId: mongoose.Types.ObjectId,
-    fulfiller: String,
-    haveId: mongoose.Types.ObjectId,
+    fulfiller: mongoose.Types.ObjectId,
     name: String,
     quantity: Number,
-    allergenInformation: String,
-    expirationDate: Date,
-    fulfillmentDate: Date,
-    status: String,
+    date: Date,
 }
 
-export default FoodDelivery
+export default Connection
