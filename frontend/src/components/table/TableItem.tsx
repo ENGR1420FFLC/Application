@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import Have from "../../services/models/Have"
-import Button from "../button/Button"
+import Button from "../UI/button/Button"
 import { FaTrash, FaPhoneAlt } from "react-icons/fa"
 import { ImLoop2 } from "react-icons/im"
 import BaseTheme from "../../themes/BaseTheme"

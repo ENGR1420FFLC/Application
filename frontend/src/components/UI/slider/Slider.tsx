@@ -2,12 +2,18 @@ import styled from "styled-components";
 
 const SliderWrapper = styled.div`
     padding: 5px;
-    border-radius: 5px;
     border: 1px solid ${p => p.theme.complementColor};
     display: flex;
     gap: 5px;
     position: relative;
     font-size: 0.85em;
+    height: 40px;
+    padding: 5px;
+    box-sizing: border-box;
+
+    &:hover {
+        border: 1px solid ${p => p.theme.accentColor};
+    }
 `
 
 interface SliderThumbTypes {
@@ -20,7 +26,6 @@ const SliderThumb = styled.div`
     background-color: ${(p: SliderThumbTypes) => p.selected ? (p.color ? p.color : p.theme.accentColor) : "none"};
     color: ${(p: SliderThumbTypes) => p.selected ? p.theme.invertedTextColor : p.theme.textColor};
     padding: 4.5px;
-    border-radius: 5px;
     
     &:hover {
         cursor: pointer;

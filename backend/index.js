@@ -7,6 +7,7 @@ const Have = require('./models/have')
 const Need = require('./models/need')
 const Event = require('./models/event')
 const { RRule, RRuleSet, rrulestr } = require('rrule')
+const e = require('express')
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -197,9 +198,8 @@ app.get('/api/events', (request, response) => {
       dates = rrulestr(e.rrule).between(day1, day2, inc=true)
       for (date of dates) {
         result.push({
-          event_name: e.event_name,
-          data: e,
-          date: date
+            ...e,
+            date: date
         })
       }
     }
@@ -209,7 +209,7 @@ app.get('/api/events', (request, response) => {
   })
 })
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

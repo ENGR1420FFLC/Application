@@ -2,7 +2,7 @@ const BaseTheme = {
     neutralColor: "#fff",
     darkenedNeutralColor: "#aaa",
     complementColor: "#e2e2e2",
-    accentColor: "#eb9e11",
+    accentColor: "#1c74d2",
 
     invertedTextColor: "#fff",
     textColor: "#333",
@@ -11,8 +11,8 @@ const BaseTheme = {
     midColor: "#fdfd96",
     validColor: "#77dd77",
 
-    bodyFontFamily: "'Lato', sans-serif",
-    headingFontFamily: "'Roboto Slab', serif",
+    bodyFontFamily: "'Roboto', sans-serif",
+    headingFontFamily: "'Montserrat', sans-serif",
 }
 
 export default BaseTheme

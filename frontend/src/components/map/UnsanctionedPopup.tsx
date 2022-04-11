@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "../button/Button";
-import PopupMsg from "../popupmsg/PopupMsg";
+import Button from "../UI/button/Button";
+import PopupMsg from "../UI/popupmsg/PopupMsg";
 import styled from "styled-components";
-import Dropdown from "../dropdown/Dropdown";
+import Dropdown from "../UI/dropdown/Dropdown";
 
 const Wrapper = styled.div`
     display: flex;

@@ -1,8 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Pages } from "../../Pages";
-import Button from "../button/Button"
-import ProfileIcon from "./ProfileIcon";
+import { Heading } from "../textStyles/TextStyles";
+import Button from "../UI/button/Button"
 
 const ButtonWrapper = styled.div`
     display: flex;
@@ -10,18 +10,15 @@ const ButtonWrapper = styled.div`
     font-family: ${p => p.theme.bodyFontFamily};
     position: absolute;
     right: 5%;
-    bottom: calc(-0.5em - 10px);
+    bottom: -1px;
 `
 
-const ImageWrapper = styled.div`
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-`
-
-const Image = styled.img`
-    width: 100%;
+const NavHeading = styled(Heading)`
+    bottom: 5px;
+    left: 20px;
+    position: absolute;
+    font-weight: 800;
+    font-size: 1.5em;
 `
 
 const NavWrapper = styled.div`
@@ -44,15 +41,11 @@ const Navbar = ({ currentPage, setCurrentPage }: PropTypes) => {
 
     return( 
         <NavWrapper>
-            <ProfileIcon/>
-            <ImageWrapper>
-                <Image src={require("./Header.jpg")} alt="" />
-            </ImageWrapper>
+            <NavHeading>Logged in as Burrito Brigade</NavHeading>
             <ButtonWrapper>
                 <Button content="Map" onClick={() => setCurrentPage(Pages.MAP)} selected={currentPage === Pages.MAP}/>
                 <Button content="Calendar" onClick={() => setCurrentPage(Pages.CALENDAR)} selected={currentPage === Pages.CALENDAR} />
-                <Button content="Inventory" onClick={() => setCurrentPage(Pages.INVENTORY)} selected={currentPage === Pages.INVENTORY}/>
-                <Button content="Needs" onClick={() => setCurrentPage(Pages.NEEDS)} selected={currentPage === Pages.NEEDS}/>
+                <Button content="Connections" onClick={() => setCurrentPage(Pages.CONNECTIONS)} selected={currentPage === Pages.CONNECTIONS}/>
             </ButtonWrapper>
         </NavWrapper>
     )

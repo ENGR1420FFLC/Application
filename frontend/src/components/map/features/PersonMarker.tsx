@@ -2,7 +2,7 @@ import { DivIcon, Icon, LatLngExpression } from "leaflet"
 import React, { useState } from "react"
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import styled from "styled-components"
-import Button from "../../button/Button"
+import Button from "../../UI/button/Button"
 
 const PersonMarker = (
     { position, numPerson=1, color=null, unsanctioned=false}: 

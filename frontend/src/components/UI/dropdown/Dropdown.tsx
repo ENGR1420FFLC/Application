@@ -5,8 +5,8 @@ import { FaAngleDown } from "react-icons/fa"
 const DropDownWrapper = styled.div`
 
     color: ${p => p.theme.accentColor};
-    padding: 0.5em;
-    border-radius: 5px;
+    height: 40px;
+    padding: 0 15px;
     border: 1px solid ${p => p.theme.complementColor};
 
     font-size: "1em";
