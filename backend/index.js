@@ -185,17 +185,16 @@ app.post('/api/events', (request, response) => {
   })
 })
 
-app.get('/api/events/:month', (request, response) => {
-  let month = request.params.month
-  console.log("MONTH:" + month)
-  if (month === "month") {
-    Connection.find({}).then(events => {
-      response.json({
-        events: events
-      })
+app.get('/api/events', (request, response) => {
+  Connection.find({}).then(events => {
+    response.json({
+      events: events
     })
-  }
-  month = Number(month)
+  })
+})
+
+app.get('/api/events/:month', (request, response) => {
+  const month = Number(request.params.month)
   day1 = new Date(Date.UTC(2022, month - 1, 1))
   day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
   Connection.find({}).then(events => {
