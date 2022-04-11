@@ -5,6 +5,7 @@ const Location = require('./models/location')
 const Connection = require('./models/event')
 const { RRule, RRuleSet, rrulestr } = require('rrule')
 const e = require('express')
+const url = require('url');
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -173,7 +174,7 @@ app.post('/api/connections', (request, response) => {
   const event = new Connection({
     name: body.name,
     fromId: body.fromId,
-    toId: body.ToId,
+    toId: body.toId,
     description: body.description,
     allergenInformation: body.allergenInformation,
     rrule: rruleString,
@@ -184,14 +185,17 @@ app.post('/api/connections', (request, response) => {
   })
 })
 
-app.get('/api/connections', (request, response) => {
-  const params = request.query
-console.log(request.query)
-  if (params.month === undefined) {
-    return response.status(400).json({error: 'month missing'})
+app.get('/api/events/:month', (request, response) => {
+  const month = request.params.month
+  
+  if (month === undefined) {
+    Connection.find({}).then(events => {
+      response.json({
+        events: events
+      })
+    })
   }
-
-  month = Number(params.month)
+  month = Number(month)
   day1 = new Date(Date.UTC(2022, month - 1, 1))
   day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
   Connection.find({}).then(events => {
