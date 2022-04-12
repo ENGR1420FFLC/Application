@@ -194,14 +194,14 @@ app.get('/api/events', (request, response) => {
 })
 
 app.get('/api/events/:month', (request, response) => {
-  if (!month || isNaN(month) || isNaN(Number(month)) || Number(month) < 1 || Number(month) > 12) return response.json({error: 'bad'})
-  month = request.params.month
-  month = Number(month)
-  day1 = new Date(Date.UTC(2022, month - 1, 1))
-  day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
-  Connection.find({}).then(events => {
+    let month = request.params.month
+    if (!month || isNaN(month) || isNaN(Number(month)) || Number(month) < 1 || Number(month) > 12) return response.json({ error: 'bad' })
+    month = Number(month)
+    day1 = new Date(Date.UTC(2022, month - 1, 1))
+    day2 = new Date(Date.UTC(2022, month, 0, 11, 59, 59))
+    Connection.find({}).then(events => {
     result = []
-    for (e of events) {
+    for (let e of events) {
       dates = rrulestr(e.rrule).between(day1, day2, inc=true)
       for (date of dates) {
         result.push({
