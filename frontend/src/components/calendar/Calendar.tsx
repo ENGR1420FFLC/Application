@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Button from "../UI/button/Button"
 import Day from "./Day"
@@ -7,6 +7,7 @@ import { Header, HeaderWrapper } from "../textStyles/TextStyles";
 import Connection from "../../services/models/Connection";
 import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 import Location from "../../services/models/Location";
+import Service from "../../services/Service";
 
 
 const CalendarWrapper = styled.div`
@@ -52,7 +53,15 @@ const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
 
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
-    const [todaysDate, ] = useState(new Date())
+
+    useEffect(() => {
+        console.log(displayMonth)
+        Service.getConnections(displayMonth + 1)
+            .then(data => {
+                console.log(data)
+                setConnections(data)
+            })
+    }, [displayMonth])
 
     const numDays = new Date(displayYear, displayMonth + 1, 0).getDate()
     const firstDayOffset = new Date(displayYear, displayMonth, 1).getDay()
@@ -72,8 +81,9 @@ const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
         dayObjects.push(<Day 
             day={date}
             key={date.toString()} 
-            isToday={datesAreEqual(todaysDate, date)}
+            isToday={datesAreEqual(new Date(), date)}
             connections={content}
+            locations={locations}
         />)
     }
 

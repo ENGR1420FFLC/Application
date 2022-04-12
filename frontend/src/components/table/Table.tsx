@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import TableHeader from "./TableHeader"
 import { Header, HeaderWrapper } from "../textStyles/TextStyles"
@@ -20,11 +20,14 @@ const ItemsWrapper = styled.div`
 `
 
 const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
+
+    const [filter, setFilter] = useState("All")
+
     return(
         <>
             <HeaderWrapper>
                 <Header>{name}</Header>
-                Show <Dropdown currentState="Next 30 days" possibleStates={["TEST"]} setState={() => null} />
+                Show <Dropdown currentState={filter} possibleStates={["All", "Only repeat", "Only one-time"]} setState={setFilter} />
             </HeaderWrapper>
             <TableHeader/>
             <ItemsWrapper>

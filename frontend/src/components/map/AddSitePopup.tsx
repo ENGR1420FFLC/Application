@@ -19,6 +19,12 @@ const Row = styled.div`
     align-items: center;
 `
 
+const Field = styled.div`
+    display: flex;
+    gap: 5px;
+    width: 200px;
+`
+
 const RowRight = styled(Row)`
     justify-content: flex-end;
 `
@@ -50,40 +56,55 @@ const AddSitePopup = ({ show, setShow }: { show: boolean, setShow: React.Dispatc
 
     const content = <Wrapper>
         <Heading>
-            Site Details
+            Location Details
         </Heading>
         <Row>
-            <Required/> Address: <Input 
+            <Field>
+                <Required/> Address:
+            </Field> 
+            <Input 
                 value={data.address} 
                 setValue={e => setData({ ...data, address: e })} 
-                placeholder="Enter address..." />
+                placeholder="..." />
 
-            <Button content={"Fill using current location"} onClick={() => null} />
+            <Button content={"Use current location"} onClick={() => null} />
         </Row>
         <Row>
-            <Required /> Type: <Dropdown 
+            <Field>
+                <Required /> Type:
+            </Field> 
+            <Dropdown 
                 currentState={data.identity} 
                 possibleStates={["Site", "Provider", "Both", "Unknown"]} 
                 setState={e => setData({ ...data, identity: e })}/>
         </Row>
         {data.identity === "Site" && <Row>
-            <Required />
-            Expiration (if unsanctioned): <Dropdown
+            <Field>
+                <Required />
+                Expiration:
+            </Field> 
+            <Dropdown
                 currentState={data.expiration}
-                possibleStates={["Does not expire", "1 day", "4 days", "1 week", "1 month"]}
-                setState={e => setData({ ...data, identity: e })} />
+                possibleStates={["Does not expire (sanctioned)", "1 day (unsanctioned)", "4 days (unsanctioned)", "1 week (unsanctioned)", "1 month (unsanctioned)"]}
+                setState={e => setData({ ...data, expiration: e })} />
         </Row>}
         {data.identity !== "Provider" && <Row>
-            Estimated # of people: <Dropdown
+            <Field>Estimated # of people:</Field> <Dropdown
                 currentState={data.numPeople}
                 possibleStates={["Less than 10", "20", "30", "More than 40"]}
                 setState={e => setData({ ...data, numPeople: e })} />
         </Row>}
         <Row>
-            Days of operation: <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="Description..." />
+            <Field>Days of operation:</Field> <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="..." />
         </Row>
         <Row>
-            Description: <Input value={data.description} setValue={e => setData({...data, description: e})} placeholder="Add a note..."/>
+            <Field>Description:</Field> <Input value={data.description} setValue={e => setData({...data, description: e})} placeholder="..."/>
+        </Row>
+        <Row>
+            <Field>FFLC Partner:</Field> <Dropdown
+                currentState={data.isPartner}
+                possibleStates={["NO", "YES"]}
+                setState={e => setData({ ...data, isPartner: e })} />
         </Row>
         <RowRight>
             <R>* Required</R>
@@ -92,7 +113,7 @@ const AddSitePopup = ({ show, setShow }: { show: boolean, setShow: React.Dispatc
         </RowRight>
     </Wrapper>
 
-    return <PopupMsg title="Add Site" content={content} show={show} setShow={setShow} />
+    return <PopupMsg title="Add Location" content={content} show={show} setShow={setShow} />
 }
 
 export default AddSitePopup

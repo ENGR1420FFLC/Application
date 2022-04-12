@@ -26,7 +26,7 @@ const ResetButton = () => {
     const map = useMapEvents({})
 
     const HandleClick = () => {
-        map.flyTo([44.0421, -123.1068], 14.5)
+        map.flyTo([44.0421, -123.1018], 13)
     }
 
     return <Wrapper>
@@ -52,7 +52,7 @@ const Map = ({ connectionConstructors, locations }: PropTypes) => {
                 </Header>
                 Show 
                 <Dropdown currentState={siteFilter} possibleStates={["All", "Only unsanctioned", "Only sanctioned"]} setState={setSiteFilter} />
-                locations
+                sites
             </HeaderWrapper>
 
             <AddSitePopup show={showAddSite} setShow={setShowAddSite}/>
@@ -74,7 +74,7 @@ const Map = ({ connectionConstructors, locations }: PropTypes) => {
             </MapContainer>
             <br />
             <Center>
-                <Button content={<><FaPlus />Add Site</>} onClick={() => setShowAddSite(true)} />
+                <Button content={<><FaPlus />Add Location</>} onClick={() => setShowAddSite(true)} />
             </Center>
         </>
     )

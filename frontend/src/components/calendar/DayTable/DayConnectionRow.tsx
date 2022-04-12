@@ -1,19 +1,19 @@
 import styled from "styled-components";
-import ConnectionConstructor from "../../services/models/ConnectionConstructor";
-import { RRule } from 'rrule'
-import Location from "../../services/models/Location";
-import Button from "../UI/button/Button";
 import { FaPen } from "react-icons/fa";
 import { useState } from "react";
-import LocationPopup from "../map/LocationPopup";
+import Connection from "../../../services/models/Connection";
+import Location from "../../../services/models/Location";
+import LocationPopup from "../../map/LocationPopup";
+import Button from "../../UI/button/Button";
 
 const Wrapper = styled.div`
     border: 1px solid ${p => p.theme.complementColor};
     padding: 10px;
     font-family: ${p => p.theme.bodyFontFamily};
     display: grid;
+    font-size: 0.9em;
     align-items: center;
-    grid-template-columns: 100px auto 150px 150px 200px 50px;
+    grid-template-columns: 120px auto 150px 150px;
     grid-gap: 5px;
 `
 
@@ -24,26 +24,24 @@ const Clickable = styled.div`
 `
 
 // TODO: Implement deleting
-const ConnectionRow = ({ connectionConstructor, locations }: { connectionConstructor: ConnectionConstructor, locations: Location[] }) => {
+const DayConnectionRow = ({ connection, locations }: { connection: Connection, locations: Location[] }) => {
 
-    const from = locations.find(l => l.id === connectionConstructor.fromId)
-    const to = locations.find(l => l.id === connectionConstructor.toId)
+    const from = locations.find(l => l.id === connection.fromId)
+    const to = locations.find(l => l.id === connection.toId)
 
     const [showToPopup, setShowToPopup] = useState(false)
     const [showFromPopup, setShowFromPopup] = useState(false)
-    console.log(connectionConstructor.rrule)
+    
     return <>
         <Wrapper>
-            <div>{connectionConstructor.name}</div>
-            <div>{connectionConstructor.description}</div>
+            <div>{connection.name}</div>
+            <div>{connection.description}</div>
             {from ? <Clickable onClick={() => setShowFromPopup(true)}>{from.name}</Clickable> : <div>Unknown</div>}
             {to ? <Clickable onClick={() => setShowToPopup(true)}>{to.name}</Clickable> : <div>Unknown</div>}
-            <div>{RRule.fromText(connectionConstructor.rrule).toText()}</div>
-            <Button content={<FaPen />} onClick={() => null}/>
         </Wrapper>
         {from && <LocationPopup location={from} show={showFromPopup} setShow={setShowFromPopup} />}
         {to && <LocationPopup location={to} show={showToPopup} setShow={setShowToPopup} />}
     </>
 }
 
-export default ConnectionRow
+export default DayConnectionRow
