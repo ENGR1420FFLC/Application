@@ -10,12 +10,12 @@ const getAllLocations = (): Promise<Location[]> => {
 
 const getConnections = (month: number): Promise<Connection[]> => {
     return axios.get(`/api/events/${month}`)
-        .then((data: { data: any }) => data.data)
+        .then((data: { data: any }) => data.data.events)
 }
 
 const getAllConnectionConstructors = (): Promise<ConnectionConstructor[]> => {
     return axios.get('/api/events')
-        .then((data: { data: any }) => data.data)
+        .then((data: { data: any }) => data.data.events)
 }
 
 const Service = { getAllLocations, getConnections, getAllConnectionConstructors }

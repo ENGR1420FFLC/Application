@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Heading = styled.div`
     font-family: ${p => p.theme.headingFontFamily};
+    color: ${p => p.theme.textColor};
 `
 
 export const Header = styled.div`

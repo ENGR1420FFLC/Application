@@ -2,11 +2,9 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import "./App.css"
 import { ThemeProvider } from 'styled-components';
 import BaseTheme from './themes/BaseTheme';
-
 import Calendar from './components/calendar/Calendar';
 import Table from './components/table/Table';
 import Map from './components/map/Map';
-
 import Navbar from './components/navbar/Navbar';
 import ContentWrapper from './components/ContentWrapper';
 import { Pages } from './Pages';
@@ -28,9 +26,9 @@ const App = () => {
 
     useEffect(() => {
         Service.getAllLocations()
-            .then(data => {setLocations(data); console.log(data)})
+            .then((data: Location[]) => setLocations(data))
         Service.getAllConnectionConstructors()
-            .then(data => { setConnectionConstructors(data); console.log(data) })
+            .then((data: ConnectionConstructor[]) => { setConnectionConstructors(data); console.log(data) })
     }, [])
     
 
@@ -40,7 +38,10 @@ const App = () => {
 
     switch(currentPage) {
         case Pages.MAP:
-            content = <Map/>
+            content = <Map
+                connectionConstructors={connectionConstructors}
+                locations={locations}
+            />
             break
         case Pages.CONNECTIONS:
             content = <Table 

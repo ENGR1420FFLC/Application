@@ -19,12 +19,14 @@ const Dim = styled.div`
 
 const PopupWrapper = styled.div`
     background-color: ${p => p.theme.neutralColor};
-    padding: 10px;
+    padding: 15px;
     width: 600px;
     border: 1px solid ${p => p.theme.complementColor};
 `
 
-const PopupMsg = ({ content, title, show, setShow }: { title: string, content: ReactElement | string, show: boolean, setShow: React.Dispatch<boolean> }) => {
+type PropTypes = { title: string, content: ReactElement | string, show: boolean, setShow: React.Dispatch<boolean> }
+
+const PopupMsg = ({ content, title, show, setShow }: PropTypes) => {
     return (
         <>{show ? <Dim onClick = { () => setShow(false) }>
             <PopupWrapper onClick={e => e.stopPropagation()}>

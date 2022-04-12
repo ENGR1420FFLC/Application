@@ -9,16 +9,16 @@ const ButtonWrapper = styled.div`
     gap: 10px;
     font-family: ${p => p.theme.bodyFontFamily};
     position: absolute;
-    right: 5%;
+    right: 60px;
     bottom: -1px;
 `
 
 const NavHeading = styled(Heading)`
     bottom: 5px;
-    left: 20px;
+    left: 50px;
     position: absolute;
     font-weight: 800;
-    font-size: 1.5em;
+    font-size: 1.75em;
 `
 
 const NavWrapper = styled.div`
@@ -41,7 +41,7 @@ const Navbar = ({ currentPage, setCurrentPage }: PropTypes) => {
 
     return( 
         <NavWrapper>
-            <NavHeading>Logged in as Burrito Brigade</NavHeading>
+            <NavHeading>FFLC Partner Information System</NavHeading>
             <ButtonWrapper>
                 <Button content="Map" onClick={() => setCurrentPage(Pages.MAP)} selected={currentPage === Pages.MAP}/>
                 <Button content="Calendar" onClick={() => setCurrentPage(Pages.CALENDAR)} selected={currentPage === Pages.CALENDAR} />

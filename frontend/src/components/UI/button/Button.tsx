@@ -22,7 +22,7 @@ const ButtonWrapper = styled.div`
     justify-content: center;
     align-items: center;
     gap: 5px;
-    font-size: ${(p: ButtonTypes) => p.small ? "0.8em" : "1em"};
+    font-size: ${(p: ButtonTypes) => p.small ? "0.8rem" : "1rem"};
     box-sizing: border-box;
     user-select: none;
     font-family: ${(p: ButtonTypes) => p.theme.bodyFontFamily};

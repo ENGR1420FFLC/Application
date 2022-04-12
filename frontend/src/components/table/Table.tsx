@@ -5,6 +5,7 @@ import { Header, HeaderWrapper } from "../textStyles/TextStyles"
 import Dropdown from "../UI/dropdown/Dropdown"
 import Location from "../../services/models/Location"
 import ConnectionConstructor from "../../services/models/ConnectionConstructor"
+import ConnectionRow from "./ConnectionRow"
 
 type PropTypes = {
     name: string
@@ -27,13 +28,7 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
             </HeaderWrapper>
             <TableHeader/>
             <ItemsWrapper>
-                {connectionConstructors.map(connection => <div key={connection.id.toString()}>
-                    Name: {connection.name}
-                    {/* Date: {connection.date} */}
-                    Description: {connection.description}
-                    From: {connection.fromId}
-                    To: {connection.toId}
-                </div>)}
+                {connectionConstructors.map(connection => <ConnectionRow key={connection.id.toString()} connectionConstructor={connection} locations={locations}/>)}
             </ItemsWrapper>
         </>
     )
