@@ -24,7 +24,7 @@ const NavHeading = styled(Heading)`
 const NavWrapper = styled.div`
     width: 100%;
     height: 75px;
-    margin-bottom: 75px;
+    margin-bottom: 25px;
     border-bottom: 1px solid ${p => p.theme.complementColor};
     box-sizing: border-box;
     position: relative;

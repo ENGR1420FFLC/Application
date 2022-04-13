@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 type Location = {
-    id: mongoose.Types.ObjectId,
+    id: mongoose.Types.ObjectId | null,
     longitude: number,
     latitude: number,
-    num_people: number,
-    expiration: Date,
+    numPeople: number,
+    expiration: Date | null | string | number,
     identity: string
     name: string
 }

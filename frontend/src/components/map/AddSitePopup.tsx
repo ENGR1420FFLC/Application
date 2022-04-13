@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../UI/button/Button";
 import PopupMsg from "../UI/popupmsg/PopupMsg";
 import styled from "styled-components";
 import Dropdown from "../UI/dropdown/Dropdown";
 import Input from "../UI/input/Input";
+import Service from "../../services/Service";
+import Location from "../../services/models/Location";
 
 const Wrapper = styled.div`
     display: flex;
@@ -17,6 +19,12 @@ const Row = styled.div`
     display: flex;
     gap: 10px;
     align-items: center;
+`
+
+const Field = styled.div`
+    display: flex;
+    gap: 5px;
+    width: 200px;
 `
 
 const RowRight = styled(Row)`
@@ -35,64 +43,115 @@ const R = styled.div`
 `
 const Required = () => <R>*</R>
 
-const AddSitePopup = ({ show, setShow }: { show: boolean, setShow: React.Dispatch<boolean>}) => {
+type PropTypes = { show: boolean, setShow: React.Dispatch < boolean >, defaultLocation: number[], addLocation: (location: Location) => void }
 
-    const [data, setData] = useState({
+const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes) => {
+
+    const fromMarker = defaultLocation[0] !== 0 && defaultLocation[1] !== 0
+    const defaultData = {
         name: "",
-        numPeople: "Less than 10",
-        expiration: "Does not expire",
+        numPeople: 10,
+        expiration: -1,
         description: "",
         address: "",
         identity: "Site",
         daysOfOperation: "",
         isPartner: "NO"
-    })
+    }
+
+    const [data, setData] = useState(defaultData)
+
+    useEffect(() => {
+        setData(defaultData)
+    }, [show])
+    
+
+    const HandleSubmit = () => {
+
+        Service.addLocation({
+            latitude: defaultLocation[0],
+            longitude: defaultLocation[1],
+            numPeople: data.numPeople,
+            expiration: data.expiration,
+            identity: data.identity,
+            name: data.name,
+            id: null
+        })
+        .then(newLocation => addLocation(newLocation))
+        setShow(false)
+    }
 
     const content = <Wrapper>
-        <Heading>
-            Site Details
-        </Heading>
         <Row>
-            <Required/> Address: <Input 
-                value={data.address} 
-                setValue={e => setData({ ...data, address: e })} 
-                placeholder="Enter address..." />
-
-            <Button content={"Fill using current location"} onClick={() => null} />
+            <Field>
+                <Required /> Name:
+            </Field>
+            <Input
+                value={data.name}
+                setValue={e => setData({ ...data, name: e })}
+                placeholder="..." />
         </Row>
         <Row>
-            <Required /> Type: <Dropdown 
+            <Field>
+                <Required/> Address:
+            </Field> 
+            <Input 
+                value={fromMarker ? "Using marker" : data.address} 
+                setValue={e => setData({ ...data, address: e })} 
+                disabled={fromMarker}
+                placeholder="..." />
+
+            {!fromMarker && <Button content={"Use current location"} onClick={() => null} />}
+        </Row>
+        <Row>
+            <Field>
+                <Required /> Type:
+            </Field> 
+            <Dropdown 
                 currentState={data.identity} 
-                possibleStates={["Site", "Provider", "Both", "Unknown"]} 
+                possibleStates={["Site", "Provider", "Both", "Unknown"]}
+                displayStates={["Site", "Provider", "Both", "Unknown"]} 
                 setState={e => setData({ ...data, identity: e })}/>
         </Row>
         {data.identity === "Site" && <Row>
-            <Required />
-            Expiration (if unsanctioned): <Dropdown
+            <Field>
+                <Required />
+                Expiration:
+            </Field> 
+            <Dropdown
                 currentState={data.expiration}
-                possibleStates={["Does not expire", "1 day", "4 days", "1 week", "1 month"]}
-                setState={e => setData({ ...data, identity: e })} />
+                possibleStates={[-1, 1, 4, 7, 30]}
+                displayStates={["Does not expire (sanctioned)", "1 day (unsanctioned)", "4 days (unsanctioned)", "1 week (unsanctioned)", "1 month (unsanctioned)"]}
+                setState={e => setData({ ...data, expiration: e })} />
         </Row>}
         {data.identity !== "Provider" && <Row>
-            Estimated # of people: <Dropdown
+            <Field>Estimated # of people:</Field> <Dropdown
                 currentState={data.numPeople}
-                possibleStates={["Less than 10", "20", "30", "More than 40"]}
+                possibleStates={[10, 20, 30, 40]}
+                displayStates={["Less than 10", "20", "30", "More than 40"]}
                 setState={e => setData({ ...data, numPeople: e })} />
         </Row>}
         <Row>
-            Days of operation: <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="Description..." />
+            <Field>Days of operation:</Field> <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="..." />
         </Row>
         <Row>
-            Description: <Input value={data.description} setValue={e => setData({...data, description: e})} placeholder="Add a note..."/>
+            <Field>Description:</Field> <Input value={data.description} setValue={e => setData({...data, description: e})} placeholder="..."/>
+        </Row>
+        <Row>
+            <Field>FFLC Partner:</Field> <Dropdown
+                currentState={data.isPartner}
+                possibleStates={["NO", "YES"]}
+                displayStates={["NO", "YES"]}
+                setState={e => setData({ ...data, isPartner: e })} />
         </Row>
         <RowRight>
             <R>* Required</R>
             <Button content={"Cancel"} onClick={() => setShow(false)} />
-            <Button content={"Add Site"} onClick={() => null} selected disabled={data.address === ""}/>
+            <Button content={"Add Site"} onClick={HandleSubmit} selected disabled={data.address === "" && data.name === ""}/>
         </RowRight>
     </Wrapper>
 
-    return <PopupMsg title="Add Site" content={content} show={show} setShow={setShow} />
+    return <PopupMsg title="Add Location" content={content} show={show} setShow={setShow} />
 }
 
 export default AddSitePopup

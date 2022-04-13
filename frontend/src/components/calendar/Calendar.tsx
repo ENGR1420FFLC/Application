@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Button from "../UI/button/Button"
 import Day from "./Day"
@@ -7,6 +7,7 @@ import { Header, HeaderWrapper } from "../textStyles/TextStyles";
 import Connection from "../../services/models/Connection";
 import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 import Location from "../../services/models/Location";
+import Service from "../../services/Service";
 
 
 const CalendarWrapper = styled.div`
@@ -43,16 +44,23 @@ enum Months {
 type PropTypes = {
     connectionConstructors: ConnectionConstructor[]
     locations: Location[]
+    setLocations: React.Dispatch<Location[]>
 }
 
-const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
+const Calendar = ({ connectionConstructors , locations, setLocations }: PropTypes) => {
 
     const emptyConnections: Connection[] = []
     const [connections, setConnections] = useState(emptyConnections)
 
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
-    const [todaysDate, ] = useState(new Date())
+
+    useEffect(() => {
+        Service.getConnections(displayMonth + 1)
+            .then(data => {
+                setConnections(data)
+            })
+    }, [displayMonth])
 
     const numDays = new Date(displayYear, displayMonth + 1, 0).getDate()
     const firstDayOffset = new Date(displayYear, displayMonth, 1).getDay()
@@ -70,10 +78,13 @@ const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
         const date = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
         const content = connections.filter(connection => datesAreEqual(connection.date, date))
         dayObjects.push(<Day 
+            setLocations={setLocations}
+            connectionConstructors={connectionConstructors}
             day={date}
             key={date.toString()} 
-            isToday={datesAreEqual(todaysDate, date)}
+            isToday={datesAreEqual(new Date(), date)}
             connections={content}
+            locations={locations}
         />)
     }
 
