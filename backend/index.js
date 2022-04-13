@@ -97,7 +97,7 @@ app.post('/api/locations', (request, response) => {
 })
 
 app.delete('/api/locations', (request, response) => {
-    console.log(request.body)
+    // do nothing
 })
 
 app.get('/api/events', (request, response) => {
