@@ -38,7 +38,7 @@ const LocationPopup = ({ location, show, setShow }: PropTypes) => {
     const locationContent = <Wrapper>
         <Row name="Description" value="No Description Provided..." />
         <Row name="Type" value={location.identity} />
-        <Row name="Number of people" value={(Math.round(location.num_people) || "N/A").toString()}/>
+        <Row name="Number of people" value={(Math.round(location.numPeople) || "N/A").toString()}/>
         <Row name="Location" value={Math.round(location.longitude).toString() + ", " + Math.round(location.latitude).toString()} />
         <Row name="Days of operation" value={"Tu, Th, Su"} />
         <Row name="Is FFLC partner" value={"YES"} />

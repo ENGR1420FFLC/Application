@@ -46,7 +46,7 @@ type PropTypes = {
 
 const Button = ({ content, onClick, selected, color, small, disabled }: PropTypes) => 
 <ButtonWrapper 
-    onClick={disabled ? () => null : onClick} 
+    onClick={disabled ? () => null : (e) => {e.stopPropagation(); onClick()}} 
     selected={selected || false} 
     color={color} 
     small={small || false} 

@@ -55,10 +55,8 @@ const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
 
     useEffect(() => {
-        console.log(displayMonth)
         Service.getConnections(displayMonth + 1)
             .then(data => {
-                console.log(data)
                 setConnections(data)
             })
     }, [displayMonth])

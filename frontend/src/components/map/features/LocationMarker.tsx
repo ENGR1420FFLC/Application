@@ -8,7 +8,7 @@ import LocationPopup from "../LocationPopup"
 const LocationMarker = ({ location }: { location: Location }) => {
 
     const [showPopup, setShowPopup] = useState(false)
-    const numPerson = Math.max(Math.min(Math.round(location.num_people / 10), 4), 1)
+    const numPerson = Math.max(Math.min(Math.round(location.numPeople / 10), 4), 1)
     const unsanctioned = location.expiration === null
 
     let icon;

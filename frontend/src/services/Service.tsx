@@ -18,6 +18,20 @@ const getAllConnectionConstructors = (): Promise<ConnectionConstructor[]> => {
         .then((data: { data: any }) => data.data.events)
 }
 
-const Service = { getAllLocations, getConnections, getAllConnectionConstructors }
+const addLocation = (location: Location): Promise<Location> => {
+
+    const body = {
+        identity: location.identity || "Site",
+        name: location.name || "Unknown",
+        longitude: location.longitude,
+        latitude: location.latitude,
+        numPeople: location.numPeople,
+        expiration: location.expiration
+    }
+
+    return axios.post('/api/locations', body).then(data => data.data)
+}
+
+const Service = { getAllLocations, getConnections, getAllConnectionConstructors, addLocation }
 
 export default Service

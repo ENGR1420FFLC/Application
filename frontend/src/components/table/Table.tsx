@@ -27,7 +27,11 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
         <>
             <HeaderWrapper>
                 <Header>{name}</Header>
-                Show <Dropdown currentState={filter} possibleStates={["All", "Only repeat", "Only one-time"]} setState={setFilter} />
+                Show <Dropdown 
+                    currentState={filter} 
+                    possibleStates={["All", "Only repeat", "Only one-time"]}
+                    displayStates={["All", "Only repeat", "Only one-time"]} 
+                    setState={setFilter} />
             </HeaderWrapper>
             <TableHeader/>
             <ItemsWrapper>

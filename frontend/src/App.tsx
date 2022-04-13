@@ -28,9 +28,10 @@ const App = () => {
         Service.getAllLocations()
             .then((data: Location[]) => setLocations(data))
         Service.getAllConnectionConstructors()
-            .then((data: ConnectionConstructor[]) => { setConnectionConstructors(data); console.log(data) })
+            .then((data: ConnectionConstructor[]) => setConnectionConstructors(data))
     }, [])
     
+    console.log(locations)
 
     // CONTENT STUFF VVV
 
@@ -39,6 +40,7 @@ const App = () => {
     switch(currentPage) {
         case Pages.MAP:
             content = <Map
+                setLocations={setLocations}
                 connectionConstructors={connectionConstructors}
                 locations={locations}
             />

@@ -31,7 +31,6 @@ const ConnectionRow = ({ connectionConstructor, locations }: { connectionConstru
 
     const [showToPopup, setShowToPopup] = useState(false)
     const [showFromPopup, setShowFromPopup] = useState(false)
-    console.log(connectionConstructor.rrule)
     return <>
         <Wrapper>
             <div>{connectionConstructor.name}</div>

@@ -76,7 +76,6 @@ const DayHeader = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
 const Day = ({ day, offset = 0, isToday, connections, locations }: PropTypes) => {
 
     const [showPopup, setShowPopup] = useState(false)
-    console.log(connections)
 
     return (
         <>

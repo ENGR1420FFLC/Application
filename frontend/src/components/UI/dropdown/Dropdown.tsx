@@ -34,14 +34,15 @@ const BoxWrapper = styled.div`
         border: 1px solid ${p => p.theme.accentColor};
     }
 `
+type PropTypes = { currentState: any, possibleStates: any[], displayStates: string[], setState: React.Dispatch<any> }
 
-const Dropdown = ({ currentState, possibleStates, setState }: { currentState: any, possibleStates: any[], setState: React.Dispatch<any> }) => {
+const Dropdown = ({ currentState, possibleStates, displayStates, setState }: PropTypes) => {
     return(
         <BoxWrapper>
             <DropDownWrapper value={currentState} onChange={e => setState(e.target.value)}>
                 {/* {currentState}
                 <FaAngleDown/> */}
-                {possibleStates.map(p => <option value={p} key={p}>{p.toString()}</option>)}
+                {possibleStates.map((p, i) => <option value={p} key={p}>{displayStates[i].toString()}</option>)}
             </DropDownWrapper>
         </BoxWrapper>
     )

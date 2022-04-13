@@ -76,12 +76,15 @@ app.get('/api/locations', (request, response) => {
 
 app.post('/api/locations', (request, response) => {
   const body = request.body
+  console.log(body)
 
-  if (body.longitude === undefined || body.latitude === undefined || body.numPeople === undefined || body.expiration === undefined) {
+  if (body.longitude === undefined || body.latitude === undefined || body.numPeople === undefined || new Date(body.expiration) === undefined) {
     return response.status(400).json({ error: 'field missing' })
   }
 
-  const location = new Note({
+  const location = new Location({
+    identity: body.identity || "Site",
+    name: body.name || "Unknown",
     longitude: body.longitude,
     latitude: body.latitude,
     numPeople: body.numPeople,
