@@ -6,6 +6,9 @@ import Dropdown from "../UI/dropdown/Dropdown"
 import Location from "../../services/models/Location"
 import ConnectionConstructor from "../../services/models/ConnectionConstructor"
 import ConnectionRow from "./ConnectionRow"
+import Button from "../UI/button/Button"
+import { FaPlus } from "react-icons/fa"
+import AddConnectionPopup from "./AddConnectionPopup"
 
 type PropTypes = {
     name: string
@@ -19,9 +22,20 @@ const ItemsWrapper = styled.div`
     gap: 10px;
 `
 
+const Center = styled.div`
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+`
+
 const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
 
     const [filter, setFilter] = useState("All")
+    const [showAddPopup, setShowAddPopup] = useState(false)
+
+    const popup = <div>
+        Hello
+    </div>
 
     return(
         <>
@@ -37,6 +51,10 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
             <ItemsWrapper>
                 {connectionConstructors.map(connection => <ConnectionRow key={connection.id.toString()} connectionConstructor={connection} locations={locations}/>)}
             </ItemsWrapper>
+            <Center>
+                <Button content={<><FaPlus />Add connection</>} onClick={() => null} />
+            </Center>
+            <AddConnectionPopup content={popup} show={showAddPopup} setShow={setShowAddPopup}/>
         </>
     )
 

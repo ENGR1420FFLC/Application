@@ -3,7 +3,7 @@ import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 import { RRule } from 'rrule'
 import Location from "../../services/models/Location";
 import Button from "../UI/button/Button";
-import { FaPen } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import LocationPopup from "../map/LocationPopup";
 
@@ -38,7 +38,7 @@ const ConnectionRow = ({ connectionConstructor, locations }: { connectionConstru
             {from ? <Clickable onClick={() => setShowFromPopup(true)}>{from.name}</Clickable> : <div>Unknown</div>}
             {to ? <Clickable onClick={() => setShowToPopup(true)}>{to.name}</Clickable> : <div>Unknown</div>}
             <div>{RRule.fromText(connectionConstructor.rrule).toText()}</div>
-            <Button content={<FaPen />} onClick={() => null}/>
+            <Button content={<FaTrash />} onClick={() => null}/>
         </Wrapper>
         {from && <LocationPopup location={from} show={showFromPopup} setShow={setShowFromPopup} />}
         {to && <LocationPopup location={to} show={showToPopup} setShow={setShowToPopup} />}
