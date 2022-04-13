@@ -15,29 +15,29 @@ const ButtonWrapper = styled.div`
             (p.theme.neutralColor) : 
             (p.color ? p.color : p.theme.accentColor)
         };
-    padding: 0.5em;
-    border-radius: 5px;
+    height: 40px;
+    padding: 0 15px;
     border: 1px solid ${(p: ButtonTypes) => p.selected ? p.theme.accentColor : p.theme.complementColor};
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 5px;
-    font-size: ${(p: ButtonTypes) => p.small ? "0.8em" : "1em"};
+    font-size: ${(p: ButtonTypes) => p.small ? "0.8rem" : "1rem"};
     box-sizing: border-box;
     user-select: none;
     font-family: ${(p: ButtonTypes) => p.theme.bodyFontFamily};
-
+    cursor: ${(p: ButtonTypes) => p.disabled ? "not-allowed" : "pointer"};
+    
     &:hover {
-        box-sizing: border-box;
         border: 1px solid ${(p: ButtonTypes) => p.disabled ? p.theme.complementColor : (p.color ? p.color : p.theme.accentColor) };
-        cursor: ${(p: ButtonTypes) => p.disabled ? "not-allowed" : "pointer"};
+        
     }
 `
 
 
 type PropTypes = {
     content: any
-    onClick: () => void
+    onClick: (e: React.MouseEvent<HTMLDivElement>) => any
     selected?: boolean
     color?: any
     small?: boolean

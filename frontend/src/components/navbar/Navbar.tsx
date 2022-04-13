@@ -1,33 +1,30 @@
-import React, { ReactElement } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Pages } from "../../Pages";
-import Button from "../button/Button"
-import ProfileIcon from "./ProfileIcon";
+import { Heading } from "../textStyles/TextStyles";
+import Button from "../UI/button/Button"
 
 const ButtonWrapper = styled.div`
     display: flex;
     gap: 10px;
     font-family: ${p => p.theme.bodyFontFamily};
     position: absolute;
-    right: 5%;
-    bottom: calc(-0.5em - 10px);
+    right: 60px;
+    bottom: -1px;
 `
 
-const ImageWrapper = styled.div`
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-`
-
-const Image = styled.img`
-    width: 100%;
+const NavHeading = styled(Heading)`
+    bottom: 5px;
+    left: 50px;
+    position: absolute;
+    font-weight: 800;
+    font-size: 1.75em;
 `
 
 const NavWrapper = styled.div`
     width: 100%;
     height: 75px;
-    margin-bottom: 75px;
+    margin-bottom: 25px;
     border-bottom: 1px solid ${p => p.theme.complementColor};
     box-sizing: border-box;
     position: relative;
@@ -44,15 +41,11 @@ const Navbar = ({ currentPage, setCurrentPage }: PropTypes) => {
 
     return( 
         <NavWrapper>
-            <ProfileIcon/>
-            <ImageWrapper>
-                <Image src={require("./Header.jpg")} alt="" />
-            </ImageWrapper>
+            <NavHeading>FFLC Partner Information System</NavHeading>
             <ButtonWrapper>
                 <Button content="Map" onClick={() => setCurrentPage(Pages.MAP)} selected={currentPage === Pages.MAP}/>
                 <Button content="Calendar" onClick={() => setCurrentPage(Pages.CALENDAR)} selected={currentPage === Pages.CALENDAR} />
-                <Button content="Inventory" onClick={() => setCurrentPage(Pages.INVENTORY)} selected={currentPage === Pages.INVENTORY}/>
-                <Button content="Needs" onClick={() => setCurrentPage(Pages.NEEDS)} selected={currentPage === Pages.NEEDS}/>
+                <Button content="Connections" onClick={() => setCurrentPage(Pages.CONNECTIONS)} selected={currentPage === Pages.CONNECTIONS}/>
             </ButtonWrapper>
         </NavWrapper>
     )

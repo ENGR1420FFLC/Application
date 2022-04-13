@@ -10,7 +10,7 @@ import {
 } from 'react-leaflet'
 import React, { useState } from "react"
 import styled from "styled-components"
-import Button from "../../button/Button"
+import Button from "../../UI/button/Button"
 import { LatLngExpression } from 'leaflet'
 
 
@@ -20,6 +20,8 @@ const polyline: LatLngExpression[] = [
 ]
 
 const getArrowCoords = (start: LatLngExpression, end: LatLngExpression): LatLngExpression[] => {
+    return [start, end] as LatLngExpression[]
+
     const offset = 0.0003
     const headsize = 0.0003
 

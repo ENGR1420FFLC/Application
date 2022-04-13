@@ -2,13 +2,22 @@ import styled from "styled-components";
 
 export const Heading = styled.div`
     font-family: ${p => p.theme.headingFontFamily};
+    color: ${p => p.theme.textColor};
 `
 
 export const Header = styled.div`
     font-family: ${p => p.theme.headingFontFamily};
     font-weight: 800;
     text-align: center;
-    font-size: 2em;
+    font-size: 2rem;
+    margin-right: auto;
+`
+
+export const SmallHeader = styled.div`
+    font-family: ${p => p.theme.headingFontFamily};
+    font-weight: 800;
+    text-align: center;
+    font-size: 1.4em;
     margin-right: auto;
 `
 

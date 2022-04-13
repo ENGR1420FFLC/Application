@@ -11,4 +11,4 @@ mongoose.connect(url)
     console.log('ERROR connecting to MongoDB:', error.message)
   })
 
-  module.exports = mongoose
+module.exports = mongoose

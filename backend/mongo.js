@@ -1,7 +1,14 @@
-const FoodDelivery = require('./models/food_delivery')
 const Location = require('./models/location')
-const Have = require('./models/have')
-const Need = require('./models/need')
+const Connection = require('./models/event')
+
+Connection.find({}).then(connections => {
+  for (connection in connections) {
+    console.log(connection)
+    Location.find({id: connection.fromId}).then(locations => {
+      console.log(locations[0])
+    })
+  }
+})
 
 // const my_location = new Location({
 //   longitude: 0,
@@ -9,7 +16,7 @@ const Need = require('./models/need')
 //   num_people: 0,
 //   expiration: new Date()
 // })
-
+/*
 Location.find({latitude: 0}).then(location => {
   console.log(location[0])
   console.log(location[0]._id)
@@ -31,3 +38,4 @@ Location.find({latitude: 0}).then(location => {
     })
   }
 })
+*/
