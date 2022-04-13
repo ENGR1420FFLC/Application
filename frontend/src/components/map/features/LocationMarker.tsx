@@ -2,7 +2,6 @@ import { Icon } from "leaflet"
 import { useState } from "react"
 import { Marker, Tooltip } from 'react-leaflet'
 import Location from "../../../services/models/Location"
-import PopupMsg from "../../UI/popupmsg/PopupMsg"
 import LocationPopup from "../LocationPopup"
 
 const LocationMarker = ({ location }: { location: Location }) => {
@@ -49,17 +48,21 @@ const LocationMarker = ({ location }: { location: Location }) => {
     }
 
     return (
-        <Marker 
-            position={[location.latitude, location.longitude]} 
-            eventHandlers={{
-                click: (e: any) => setShowPopup(true)
-            }}
-            icon={icon}>
-            <Tooltip direction="top" offset={[0, -30]}>
-                {location.name || "Unknown location"}
-            </Tooltip>
-            <LocationPopup location={location} show={showPopup} setShow={setShowPopup}/>
-        </Marker>
+        <>
+            <LocationPopup location={location} show={showPopup} setShow={setShowPopup} />
+            <Marker
+                position={[location.latitude, location.longitude]}
+                eventHandlers={{
+                    click: (e: any) => {
+                        setShowPopup(true)
+                    }
+                }}
+                icon={icon}>
+                <Tooltip direction="top" offset={[0, -30]}>
+                    {location.name || "Unknown location"}
+                </Tooltip>
+            </Marker>
+        </>
 
     )
 }

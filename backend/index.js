@@ -97,95 +97,34 @@ app.post('/api/locations', (request, response) => {
 })
 
 app.post('/api/events', (request, response) => {
-  const body = request.body
+    const body = request.body
 
-  if (body.name === undefined || body.start === undefined || body.repeat === undefined || body.fromId === undefined || body.toId === undefined || body.description === undefined || body.allergenInformation === undefined) {
-    return response.status(400).json({error: 'field missing'})
-  }
+    if (body.name === undefined || body.fromId === undefined || body.toId === undefined || body.description === undefined || body.allergenInformation === undefined) {
+        return response.status(400).json({error: 'field missing'})
+    }
 
-  const rruleSet = new RRuleSet()
+    if (body.weekly.constructor !== Array || body.weekly.length !== 7) return response.status(400).json({ error: 'malformed days' })
 
-  if (body.repeat === "none") {
-    rruleSet.rrule(new RRule({
-      dtstart: new Date(body.start),
-      count: 1,
-    }))
-  }
+    const rule = new RRule({
+        freq: RRule.WEEKLY,
+        interval: 1,
+        byweekday: [RRule.SU, RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR, RRule.SA].filter((r, i) => body.weekly[i])
+    })
 
-  else {
-    const weekly = body.weekly
-    if (weekly[0] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.SU,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[1] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.MO,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[2] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.TU,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[3] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.WE,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[4] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.TH,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[5] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.FR,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[6] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.SA,
-        dtstart: new Date(body.start),
-      }))
-    }
-    if (weekly[7] === 1) {
-      rruleSet.rrule(new RRule({
-        freq: RRule.MONTHLY,
-        byweekday: RRule.SU,
-        dtstart: new Date(body.start),
-      }))
-    }
-  }
+    const event = new Connection({
+        name: body.name,
+        fromId: body.fromId,
+        toId: body.toId,
+        description: body.description,
+        allergenInformation: body.allergenInformation,
+        rrule: rule.toString(),
+    })
 
-  const rruleString = rrulestr(rruleSet.toString())
+    console.log(event)
 
-  const event = new Connection({
-    name: body.name,
-    fromId: body.fromId,
-    toId: body.toId,
-    description: body.description,
-    allergenInformation: body.allergenInformation,
-    rrule: rruleString,
-  })
-
-  event.save().then(savedEvent => {
-    response.json(savedEvent)
-  })
+//   event.save().then(savedEvent => {
+//     response.json(savedEvent)
+//   })
 })
 
 app.get('/api/events', (request, response) => {

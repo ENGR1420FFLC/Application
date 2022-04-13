@@ -33,10 +33,6 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
     const [filter, setFilter] = useState("All")
     const [showAddPopup, setShowAddPopup] = useState(false)
 
-    const popup = <div>
-        Hello
-    </div>
-
     return(
         <>
             <HeaderWrapper>
@@ -52,9 +48,9 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
                 {connectionConstructors.map(connection => <ConnectionRow key={connection.id.toString()} connectionConstructor={connection} locations={locations}/>)}
             </ItemsWrapper>
             <Center>
-                <Button content={<><FaPlus />Add connection</>} onClick={() => null} />
+                <Button content={<><FaPlus />Add connection</>} onClick={() => setShowAddPopup(true)} />
             </Center>
-            <AddConnectionPopup content={popup} show={showAddPopup} setShow={setShowAddPopup}/>
+            <AddConnectionPopup locations={locations} show={showAddPopup} setShow={setShowAddPopup}/>
         </>
     )
 

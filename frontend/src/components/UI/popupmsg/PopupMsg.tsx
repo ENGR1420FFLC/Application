@@ -1,8 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Button from "../button/Button";
 import { FaTimes } from "react-icons/fa"
 import { Header, HeaderWrapper } from "../../textStyles/TextStyles";
+import L from "leaflet"
 
 const Dim = styled.div`
     position: fixed;
@@ -27,12 +28,19 @@ const PopupWrapper = styled.div`
 type PropTypes = { title: string, content: ReactElement | string, show: boolean, setShow: React.Dispatch<boolean> }
 
 const PopupMsg = ({ content, title, show, setShow }: PropTypes) => {
+
+    const handleClick = (e: any) => {
+        L.DomEvent.disableClickPropagation(e.target);
+        e.stopPropagation();
+        setShow(false)
+    }
+    
     return (
         <>{show ? <Dim onClick = { () => setShow(false) }>
             <PopupWrapper onClick={e => e.stopPropagation()}>
                 <HeaderWrapper>
                     <Header>{title}</Header>
-                    <Button content={<>Close <FaTimes /></>} onClick={() => setShow(false)}/>
+                    <Button content={<>Close <FaTimes /></>} onClick={handleClick}/>
                 </HeaderWrapper>
                 {content}
             </PopupWrapper>

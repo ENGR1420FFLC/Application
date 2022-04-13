@@ -10,6 +10,7 @@ import AddSitePopup from "./AddSitePopup"
 import ConnectionConstructor from "../../services/models/ConnectionConstructor"
 import Location from "../../services/models/Location"
 import { Icon, LatLngExpression, LeafletMouseEvent } from 'leaflet'
+import Arrow from './features/Arrow'
 
 const Wrapper = styled.div`
     z-index: 400;
@@ -90,7 +91,7 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                 sites
             </HeaderWrapper>
 
-            <AddSitePopup show={showAddSite} setShow={setShowAddSite} defaultLocation={markerPos} addLocation={addLocation}/>
+            <AddSitePopup show={showAddSite} setShow={setShowAddSite} defaultLocation={markerPos} addLocation={addLocation} />
 
             <MapContainer center={[44.0421, -123.1018]} zoom={13}>
                 <UI setAdd={setShowAddSite} markerPos={markerPos} setMarkerPos={setMarkerPos}/>
@@ -98,7 +99,8 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                     // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
                     url='https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
                     maxZoom={20}
-                    minZoom={13}
+                    minZoom={11}
+                    
                 />
 
                 {locations.map(location => {
@@ -106,10 +108,23 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                     return null
                 })}
 
+                {connectionConstructors.map(connection => {
+                    const from = locations.find(l => l.id === connection.fromId)
+                    const to = locations.find(l => l.id === connection.toId)
+
+                    if (from && to) {
+                        console.log(from, to)
+                        const start: LatLngExpression = [from.latitude, from.longitude]
+                        const end: LatLngExpression = [to.latitude, to.longitude]
+                        return <Arrow start={start} end={end}/>
+                    }
+                })}
+
             </MapContainer>
             <br />
             <Center>
-                <Button content={<><FaPlus />Add Location</>} onClick={() => {
+                <Button content={<><FaPlus />Add Location</>} onClick={e => {
+                    
                     setMarkerPos(empty)
                     setShowAddSite(true)
                 }} />

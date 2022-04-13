@@ -6,6 +6,10 @@ import Dropdown from "../UI/dropdown/Dropdown";
 import Input from "../UI/input/Input";
 import Service from "../../services/Service";
 import Location from "../../services/models/Location";
+import RRule from "rrule";
+import Checkbox from "../UI/checkbox/Checkbox";
+import { Days } from "rrule/dist/esm/src/rrule";
+import ConnectionForm from "../../services/models/ConnectionForm";
 
 const Wrapper = styled.div`
     display: flex;
@@ -43,11 +47,99 @@ const R = styled.div`
 `
 const Required = () => <R>*</R>
 
-type PropTypes = { show: boolean, setShow: React.Dispatch<boolean>, content: React.ReactElement }
+type PropTypes = { 
+    show: boolean
+    locations: Location[]
+    setShow: React.Dispatch<boolean> }
 
-const AddConnectionPopup = ({ show, setShow, content }: PropTypes) => {
+const AddConnectionPopup = ({ locations, show, setShow }: PropTypes) => {
 
-    return <PopupMsg title="Add Location" content={content} show={show} setShow={setShow} />
+    const defaultData: ConnectionForm = {
+        fromId: "",
+        toId: "",
+        name: "",
+        description: "",
+        allergenInformation: "",
+        days: [false, false, false, false, false, false, false]
+    }
+
+    const [data, setData] = useState(defaultData)
+
+    useEffect(() => {
+        setData(defaultData)
+    }, [show])
+
+    const isValid = data.fromId !== "" &&
+        data.toId !== "" &&
+        data.name !== "" &&
+        data.days.find(d => d)
+
+    const HandleSubmit = () => {
+        Service.addConnection(data)
+            .then(data => console.log(data))
+    }
+
+    const setDayConstructor = (day: number) => {
+
+        return (value: boolean) => {
+            const newDays = data.days
+            newDays[day] = value
+            setData({
+                ...data, days: newDays 
+            })
+        }
+    }
+
+    const content = <Wrapper>
+        <Row>
+            <Field>
+                <Required /> Name:
+            </Field>
+            <Input
+                value={data.name}
+                setValue={e => setData({ ...data, name: e })}
+                placeholder="..." />
+        </Row>
+        <Row>
+            <Field>
+                <Required /> From:
+            </Field>
+            <Dropdown
+                currentState={data.fromId}
+                possibleStates={[null, ...locations.map(l => l.id?.toString())]}
+                displayStates={["Select...", ...locations.map(l => l.name)]}
+                setState={e => setData({ ...data, fromId: e })} />
+        </Row>
+        <Row>
+            <Field>
+                <Required /> To:
+            </Field>
+            <Dropdown
+                currentState={data.toId}
+                possibleStates={[null, ...locations.map(l => l.id?.toString())]}
+                displayStates={["Select...", ...locations.map(l => l.name)]}
+                setState={e => setData({ ...data, toId: e })} />
+        </Row>
+        <Row>
+            <Field><Required />Days of week:</Field> 
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, i) => 
+                <Checkbox key={day} value={data.days[i]} setValue={setDayConstructor(i)} content={day}/>)}
+        </Row>
+        <Row>
+            <Field>Description:</Field> <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="..." />
+        </Row>
+        <Row>
+            <Field>Allergen Info:</Field> <Input value={data.allergenInformation} setValue={e => setData({ ...data, allergenInformation: e })} placeholder="..." />
+        </Row>
+        <RowRight>
+            <R>* Required</R>
+            <Button content={"Cancel"} onClick={() => setShow(false)} />
+            <Button content={"Add Connection"} onClick={HandleSubmit} selected disabled={!isValid} />
+        </RowRight>
+    </Wrapper>
+
+    
+    return <PopupMsg title="Add Connection" content={content} show={show} setShow={setShow} />
 }
 
 export default AddConnectionPopup

@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    z-index: 99999;
 `
 
 const RowWrapper = styled.div`

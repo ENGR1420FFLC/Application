@@ -37,7 +37,7 @@ const ButtonWrapper = styled.div`
 
 type PropTypes = {
     content: any
-    onClick: () => void
+    onClick: (e: React.MouseEvent<HTMLDivElement>) => any
     selected?: boolean
     color?: any
     small?: boolean
@@ -46,7 +46,7 @@ type PropTypes = {
 
 const Button = ({ content, onClick, selected, color, small, disabled }: PropTypes) => 
 <ButtonWrapper 
-    onClick={disabled ? () => null : (e) => {e.stopPropagation(); onClick()}} 
+    onClick={disabled ? () => null : onClick} 
     selected={selected || false} 
     color={color} 
     small={small || false} 

@@ -90,9 +90,6 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
     }
 
     const content = <Wrapper>
-        <Heading>
-            Location Details
-        </Heading>
         <Row>
             <Field>
                 <Required /> Name:
