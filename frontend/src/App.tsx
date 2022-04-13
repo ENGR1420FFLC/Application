@@ -26,7 +26,10 @@ const App = () => {
 
     useEffect(() => {
         Service.getAllLocations()
-            .then((data: Location[]) => setLocations(data))
+            .then((data: Location[]) => {
+                console.log(data)
+                setLocations(data)
+            })
         Service.getAllConnectionConstructors()
             .then((data: ConnectionConstructor[]) => setConnectionConstructors(data))
     }, [])
@@ -47,12 +50,15 @@ const App = () => {
             break
         case Pages.CONNECTIONS:
             content = <Table 
+                setLocations={setLocations}
                 name="Connections" 
                 connectionConstructors={connectionConstructors}
+                setConnectionConstructors={setConnectionConstructors}
                 locations={locations}/>
             break
         case Pages.CALENDAR:
             content = <Calendar 
+                setLocations={setLocations}
                 connectionConstructors={connectionConstructors}
                 locations={locations}
                 />

@@ -9,11 +9,14 @@ import ConnectionRow from "./ConnectionRow"
 import Button from "../UI/button/Button"
 import { FaPlus } from "react-icons/fa"
 import AddConnectionPopup from "./AddConnectionPopup"
+import Connection from "../../services/models/Connection"
 
 type PropTypes = {
     name: string
     connectionConstructors: ConnectionConstructor[]
     locations: Location[]
+    setConnectionConstructors: React.Dispatch<ConnectionConstructor[]>
+    setLocations: React.Dispatch<Location[]>
 }
 
 const ItemsWrapper = styled.div`
@@ -28,10 +31,14 @@ const Center = styled.div`
     justify-content: center;
 `
 
-const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
+const Table = ({ name, connectionConstructors, setConnectionConstructors, locations, setLocations }: PropTypes) => {
 
     const [filter, setFilter] = useState("All")
     const [showAddPopup, setShowAddPopup] = useState(false)
+
+    const addConnection = (connection: ConnectionConstructor) => {
+        setConnectionConstructors([...connectionConstructors, connection])
+    }
 
     return(
         <>
@@ -43,14 +50,17 @@ const Table = ({ name, connectionConstructors, locations }: PropTypes) => {
                     displayStates={["All", "Only repeat", "Only one-time"]} 
                     setState={setFilter} />
             </HeaderWrapper>
-            <TableHeader/>
             <ItemsWrapper>
-                {connectionConstructors.map(connection => <ConnectionRow key={connection.id.toString()} connectionConstructor={connection} locations={locations}/>)}
+                <TableHeader />
+                {connectionConstructors.map(connection => <ConnectionRow 
+                    setLocations={setLocations}
+                    key={connection.id.toString()} 
+                    connectionConstructor={connection} locations={locations} connectionConstructors={connectionConstructors}/>)}
             </ItemsWrapper>
             <Center>
                 <Button content={<><FaPlus />Add connection</>} onClick={() => setShowAddPopup(true)} />
             </Center>
-            <AddConnectionPopup locations={locations} show={showAddPopup} setShow={setShowAddPopup}/>
+            <AddConnectionPopup locations={locations} show={showAddPopup} setShow={setShowAddPopup} addConnection={addConnection}/>
         </>
     )
 

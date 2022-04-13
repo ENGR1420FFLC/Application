@@ -104,7 +104,12 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                 />
 
                 {locations.map(location => {
-                    if (location.latitude && location.longitude) return <LocationMarker location={location} key={location.id?.toString()}/>
+                    if (location.latitude && location.longitude) return <LocationMarker 
+                        locations={locations} 
+                        location={location} 
+                        key={location.id?.toString()} 
+                        setLocations={setLocations}
+                        connectionConstructors={connectionConstructors}/>
                     return null
                 })}
 
@@ -116,7 +121,7 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                         console.log(from, to)
                         const start: LatLngExpression = [from.latitude, from.longitude]
                         const end: LatLngExpression = [to.latitude, to.longitude]
-                        return <Arrow start={start} end={end}/>
+                        return <Arrow start={start} end={end} key={connection.id.toString()}/>
                     }
                 })}
 

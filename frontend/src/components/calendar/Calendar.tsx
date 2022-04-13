@@ -44,9 +44,10 @@ enum Months {
 type PropTypes = {
     connectionConstructors: ConnectionConstructor[]
     locations: Location[]
+    setLocations: React.Dispatch<Location[]>
 }
 
-const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
+const Calendar = ({ connectionConstructors , locations, setLocations }: PropTypes) => {
 
     const emptyConnections: Connection[] = []
     const [connections, setConnections] = useState(emptyConnections)
@@ -77,6 +78,8 @@ const Calendar = ({ connectionConstructors , locations }: PropTypes) => {
         const date = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
         const content = connections.filter(connection => datesAreEqual(connection.date, date))
         dayObjects.push(<Day 
+            setLocations={setLocations}
+            connectionConstructors={connectionConstructors}
             day={date}
             key={date.toString()} 
             isToday={datesAreEqual(new Date(), date)}

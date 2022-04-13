@@ -10,6 +10,8 @@ import RRule from "rrule";
 import Checkbox from "../UI/checkbox/Checkbox";
 import { Days } from "rrule/dist/esm/src/rrule";
 import ConnectionForm from "../../services/models/ConnectionForm";
+import Connection from "../../services/models/Connection";
+import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 
 const Wrapper = styled.div`
     display: flex;
@@ -50,9 +52,13 @@ const Required = () => <R>*</R>
 type PropTypes = { 
     show: boolean
     locations: Location[]
-    setShow: React.Dispatch<boolean> }
+    setShow: React.Dispatch<boolean> 
+    addConnection: (connection: ConnectionConstructor) => void
+}
 
-const AddConnectionPopup = ({ locations, show, setShow }: PropTypes) => {
+const AddConnectionPopup = ({ locations, show, setShow, addConnection }: PropTypes) => {
+
+    const displayLocations = locations.filter(l => l.latitude && l.longitude)
 
     const defaultData: ConnectionForm = {
         fromId: "",
@@ -76,7 +82,11 @@ const AddConnectionPopup = ({ locations, show, setShow }: PropTypes) => {
 
     const HandleSubmit = () => {
         Service.addConnection(data)
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data)
+                addConnection(data)
+                setShow(false)
+            })
     }
 
     const setDayConstructor = (day: number) => {
@@ -106,8 +116,8 @@ const AddConnectionPopup = ({ locations, show, setShow }: PropTypes) => {
             </Field>
             <Dropdown
                 currentState={data.fromId}
-                possibleStates={[null, ...locations.map(l => l.id?.toString())]}
-                displayStates={["Select...", ...locations.map(l => l.name)]}
+                possibleStates={[null, ...displayLocations.filter(l => l.identity !== "Site").map(l => l.id?.toString())]}
+                displayStates={["Select...", ...displayLocations.filter(l => l.identity !== "Site").map(l => (l.name + " " + l.latitude.toString().slice(0, 3) + "," + l.longitude.toString().slice(0, 3)))]}
                 setState={e => setData({ ...data, fromId: e })} />
         </Row>
         <Row>
@@ -116,8 +126,8 @@ const AddConnectionPopup = ({ locations, show, setShow }: PropTypes) => {
             </Field>
             <Dropdown
                 currentState={data.toId}
-                possibleStates={[null, ...locations.map(l => l.id?.toString())]}
-                displayStates={["Select...", ...locations.map(l => l.name)]}
+                possibleStates={[null, ...displayLocations.filter(l => l.identity !== "Provider").map(l => l.id?.toString())]}
+                displayStates={["Select...", ...displayLocations.filter(l => l.identity !== "Provider").map(l => (l.name + " " + l.latitude.toString().slice(0, 3) + "," + l.longitude.toString().slice(0, 3)))]}
                 setState={e => setData({ ...data, toId: e })} />
         </Row>
         <Row>

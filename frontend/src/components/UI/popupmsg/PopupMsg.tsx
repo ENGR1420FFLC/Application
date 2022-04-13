@@ -11,7 +11,7 @@ const Dim = styled.div`
     width: 100%;
     left: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     height: 100%;
     display: flex;
     justify-content: center;
@@ -21,8 +21,8 @@ const Dim = styled.div`
 const PopupWrapper = styled.div`
     background-color: ${p => p.theme.neutralColor};
     padding: 15px;
-    width: 600px;
-    border: 1px solid ${p => p.theme.complementColor};
+    min-width: 600px;
+    filter: drop-shadow(0 10px 20px #555);
 `
 
 type PropTypes = { title: string, content: ReactElement | string, show: boolean, setShow: React.Dispatch<boolean> }

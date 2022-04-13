@@ -96,6 +96,18 @@ app.post('/api/locations', (request, response) => {
   })
 })
 
+app.delete('/api/locations', (request, response) => {
+    console.log(request.body)
+})
+
+app.get('/api/events', (request, response) => {
+    Connection.find({}).then(events => {
+        response.json({
+            events: events
+        })
+    })
+})
+
 app.post('/api/events', (request, response) => {
     const body = request.body
 
@@ -120,19 +132,9 @@ app.post('/api/events', (request, response) => {
         rrule: rule.toString(),
     })
 
-    console.log(event)
-
-//   event.save().then(savedEvent => {
-//     response.json(savedEvent)
-//   })
-})
-
-app.get('/api/events', (request, response) => {
-  Connection.find({}).then(events => {
-    response.json({
-      events: events
+    event.save().then(savedEvent => {
+        response.json(savedEvent)
     })
-  })
 })
 
 app.get('/api/events/:month', (request, response) => {

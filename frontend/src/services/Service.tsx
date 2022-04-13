@@ -27,7 +27,7 @@ const addLocation = (location: Location): Promise<Location> => {
         longitude: location.longitude,
         latitude: location.latitude,
         numPeople: location.numPeople,
-        expiration: location.expiration
+        expiration: location.expiration === -1 ? null : location.expiration
     }
 
     return axios.post('/api/locations', body).then(data => data.data)
@@ -45,8 +45,25 @@ const addConnection = (connection: ConnectionForm): Promise<ConnectionConstructo
     }
 
     return axios.post('/api/events', body)
+        .then(data => data.data)
 }
 
-const Service = { getAllLocations, getConnections, getAllConnectionConstructors, addLocation, addConnection }
+const deleteLocation = (location: Location): Promise<any> => {
+    const config = {
+        data: { id: location.id?.toString() }
+    }
+
+    return axios.delete('/api/locations', config)
+        .then(data => data)
+}
+
+const Service = { 
+    getAllLocations,
+    getConnections, 
+    getAllConnectionConstructors, 
+    addLocation, 
+    addConnection,
+    deleteLocation
+}
 
 export default Service
