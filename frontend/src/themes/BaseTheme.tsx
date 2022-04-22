@@ -11,6 +11,8 @@ const BaseTheme = {
     midColor: "#fdfd96",
     validColor: "#77dd77",
 
+    warning: "#f5a762",
+
     bodyFontFamily: "'Roboto', sans-serif",
     headingFontFamily: "'Montserrat', sans-serif",
 }

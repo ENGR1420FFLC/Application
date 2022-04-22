@@ -11,6 +11,7 @@ import ConnectionConstructor from "../../services/models/ConnectionConstructor"
 import Location from "../../services/models/Location"
 import { Icon, LatLngExpression, LeafletMouseEvent } from 'leaflet'
 import Arrow from './features/Arrow'
+import Checkbox from '../UI/checkbox/Checkbox'
 
 const Wrapper = styled.div`
     z-index: 400;
@@ -68,12 +69,31 @@ type PropTypes = {
 const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => {
 
     const [showAddSite, setShowAddSite] = useState(false)
-    const [siteFilter, setSiteFilter] = useState("All")
+    const [siteFilter, setSiteFilter] = useState("0")
     const empty: LatLngExpression = [0, 0]
     const [markerPos, setMarkerPos] = useState(empty)
+    const [filterDays, setFilterDays] = useState([true, true, true, true, true, true, true])
 
     const addLocation = (location: Location) => {
         setLocations([...locations, location])
+    }
+
+    let locationsToShow = locations
+    switch(siteFilter) {
+        case "1":
+            locationsToShow = locations.filter(l => l.expiration !== null || l.identity !== "Site")
+            break
+        case "2":
+            locationsToShow = locations.filter(l => (l.expiration === null))
+            break
+    }
+
+    const toggleDay = (i: number) => {
+        return (value: boolean) => {
+            const newDays = filterDays.slice()
+            newDays[i] = value
+            setFilterDays(newDays)
+        }
     }
 
     return (
@@ -82,11 +102,21 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                 <Header>
                     Map
                 </Header>
-                Show 
-                <Dropdown 
-                    currentState={siteFilter} 
-                    possibleStates={["All", "Only unsanctioned", "Only sanctioned"]}
-                    displayStates={["All", "Only unsanctioned", "Only sanctioned"]} 
+                Show connections on
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, i) =>
+                    <Checkbox key={day} value={filterDays[i]} setValue={toggleDay(i)} content={day} />)}
+
+            </HeaderWrapper>
+
+            <HeaderWrapper>
+                <Header>
+                </Header>
+
+                Show
+                <Dropdown
+                    currentState={siteFilter}
+                    possibleStates={[0, 1, 2]}
+                    displayStates={["All", "Only unsanctioned", "Only sanctioned"]}
                     setState={setSiteFilter} />
                 sites
             </HeaderWrapper>
@@ -103,22 +133,23 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                     
                 />
 
-                {locations.map(location => {
+                {locationsToShow.map(location => {
                     if (location.latitude && location.longitude) return <LocationMarker 
                         locations={locations} 
                         location={location} 
                         key={location.id?.toString()} 
                         setLocations={setLocations}
-                        connectionConstructors={connectionConstructors}/>
+                        connectionConstructors={connectionConstructors}
+                        numConnections={Math.round(Math.random() * 3)}
+                        />
                     return null
                 })}
 
                 {connectionConstructors.map(connection => {
-                    const from = locations.find(l => l.id === connection.fromId)
-                    const to = locations.find(l => l.id === connection.toId)
+                    const from = locationsToShow.find(l => l.id === connection.fromId)
+                    const to = locationsToShow.find(l => l.id === connection.toId)
 
                     if (from && to) {
-                        console.log(from, to)
                         const start: LatLngExpression = [from.latitude, from.longitude]
                         const end: LatLngExpression = [to.latitude, to.longitude]
                         return <Arrow start={start} end={end} key={connection.id.toString()}/>

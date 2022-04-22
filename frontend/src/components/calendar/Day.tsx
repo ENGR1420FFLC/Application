@@ -5,9 +5,9 @@ import Connection from "../../services/models/Connection";
 import Location from "../../services/models/Location";
 import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 
-const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday: boolean, offset: number }) => `
+const DayWrapper = styled.div(({ theme, isToday, offset, numConnections }: { theme: any, isToday: boolean, offset: number, numConnections: number }) => `
     flex: 0 0 14%;
-    border: 1px solid ${isToday ? theme.accentColor : theme.complementColor};
+    border: 1px solid ${isToday ? theme.accentColor : numConnections === 0 ? theme.warning : theme.complementColor};
     box-sizing: border-box;
     height: 130px;
     padding: 5px;
@@ -55,7 +55,7 @@ const Num = styled.div(({ theme, isToday }: { theme: any, isToday: boolean }) =>
     color: ${isToday ? theme.invertedTextColor : theme.darkenedNeutralColor};
 `)
 
-const DayHeader = styled.div(({ theme, isToday }: { theme: any, isToday: boolean }) => `
+const DayHeader = styled.div(({ theme, isToday, numConnections }: { theme: any, isToday: boolean, numConnections: number }) => `
     position: absolute;
     top: 0;
     right: 0;
@@ -65,7 +65,7 @@ const DayHeader = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     justify-content: space-between;
     padding: 5px;
     align-items: center;
-    background-color: ${isToday ? theme.accentColor : theme.complementColor};
+    background-color: ${isToday ? theme.accentColor : numConnections === 0 ? theme.warning : theme.complementColor};
 `)
 
 type PropTypes = {
@@ -84,8 +84,8 @@ const Day = ({ day, offset = 0, isToday, connections, locations, connectionConst
 
     return (
         <>
-            <DayWrapper offset={offset} isToday={isToday} onClick={() => setShowPopup(true)}>
-                <DayHeader isToday={isToday}>
+            <DayWrapper offset={offset} isToday={isToday} onClick={() => setShowPopup(true)} numConnections={connections.length}>
+                <DayHeader isToday={isToday} numConnections={connections.length}>
                     <DayBubble isToday={isToday}>{day.getDate()}</DayBubble>
                     <Num isToday={isToday}>{
                         connections.length === 0 ? "No events" :
