@@ -3,6 +3,7 @@ import styled from "styled-components";
 import DayPopup from "./DayPopup";
 import Connection from "../../services/models/Connection";
 import Location from "../../services/models/Location";
+import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 
 const DayWrapper = styled.div(({ theme, isToday, offset }: { theme: any, isToday: boolean, offset: number }) => `
     flex: 0 0 14%;
@@ -45,13 +46,7 @@ const DayBubble = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     font-weight: 800;
 `)
 
-type PropTypes = { 
-    day: Date, 
-    offset?: number, 
-    isToday: boolean, 
-    connections: Connection[],
-    locations: Location[]
-}
+
 
 const Row = styled.div`
 `
@@ -73,7 +68,17 @@ const DayHeader = styled.div(({ theme, isToday }: { theme: any, isToday: boolean
     background-color: ${isToday ? theme.accentColor : theme.complementColor};
 `)
 
-const Day = ({ day, offset = 0, isToday, connections, locations }: PropTypes) => {
+type PropTypes = {
+    day: Date,
+    offset?: number,
+    isToday: boolean,
+    connections: Connection[],
+    locations: Location[]
+    connectionConstructors: ConnectionConstructor[]
+    setLocations: React.Dispatch<Location[]>
+}
+
+const Day = ({ day, offset = 0, isToday, connections, locations, connectionConstructors, setLocations }: PropTypes) => {
 
     const [showPopup, setShowPopup] = useState(false)
 
@@ -94,7 +99,14 @@ const Day = ({ day, offset = 0, isToday, connections, locations }: PropTypes) =>
                 </Row>)}
             </DayWrapper>
 
-            <DayPopup day={day} locations={locations} connections={connections} show={showPopup} setShow={setShowPopup}/>
+            <DayPopup 
+                day={day} 
+                locations={locations} 
+                connections={connections} 
+                show={showPopup} 
+                setShow={setShowPopup} 
+                setLocations={setLocations}
+                connectionConstructors={connectionConstructors}/>
         </>
     )
 }

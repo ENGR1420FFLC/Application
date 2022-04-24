@@ -48,8 +48,7 @@ type PropTypes = { show: boolean, setShow: React.Dispatch < boolean >, defaultLo
 const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes) => {
 
     const fromMarker = defaultLocation[0] !== 0 && defaultLocation[1] !== 0
-
-    const [data, setData] = useState({
+    const defaultData = {
         name: "",
         numPeople: 10,
         expiration: -1,
@@ -58,19 +57,12 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
         identity: "Site",
         daysOfOperation: "",
         isPartner: "NO"
-    })
+    }
+
+    const [data, setData] = useState(defaultData)
 
     useEffect(() => {
-        setData({
-            name: "",
-            numPeople: 10,
-            expiration: -1,
-            description: "",
-            address: "",
-            identity: "Site",
-            daysOfOperation: "",
-            isPartner: "NO"
-        })
+        setData(defaultData)
     }, [show])
     
 
@@ -90,9 +82,6 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
     }
 
     const content = <Wrapper>
-        <Heading>
-            Location Details
-        </Heading>
         <Row>
             <Field>
                 <Required /> Name:

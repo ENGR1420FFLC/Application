@@ -1,6 +1,7 @@
 import axios from "axios"
 import Connection from "./models/Connection"
 import ConnectionConstructor from "./models/ConnectionConstructor"
+import ConnectionForm from "./models/ConnectionForm"
 import Location from "./models/Location"
 
 const getAllLocations = (): Promise<Location[]> => {
@@ -26,12 +27,43 @@ const addLocation = (location: Location): Promise<Location> => {
         longitude: location.longitude,
         latitude: location.latitude,
         numPeople: location.numPeople,
-        expiration: location.expiration
+        expiration: location.expiration === -1 ? null : location.expiration
     }
 
     return axios.post('/api/locations', body).then(data => data.data)
 }
 
-const Service = { getAllLocations, getConnections, getAllConnectionConstructors, addLocation }
+const addConnection = (connection: ConnectionForm): Promise<ConnectionConstructor> => {
+
+    const body = {
+        name: connection.name || "Unknown",
+        weekly: connection.days,
+        fromId: connection.fromId,
+        toId: connection.toId,
+        description: connection.description,
+        allergenInformation: connection.allergenInformation
+    }
+
+    return axios.post('/api/events', body)
+        .then(data => data.data)
+}
+
+const deleteLocation = (location: Location): Promise<any> => {
+    const config = {
+        data: { id: location.id?.toString() }
+    }
+
+    return axios.delete('/api/locations', config)
+        .then(data => data)
+}
+
+const Service = { 
+    getAllLocations,
+    getConnections, 
+    getAllConnectionConstructors, 
+    addLocation, 
+    addConnection,
+    deleteLocation
+}
 
 export default Service

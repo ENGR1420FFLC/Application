@@ -4,8 +4,8 @@ const HeaderWrapper = styled.div`
     font-family: ${p => p.theme.bodyFontFamily};
     text-transform: uppercase;
     display: grid;
-    grid-template-columns: 120px auto 150px 150px;
-    grid-gap: 5px;
+    grid-template-columns: 200px 250px 150px 150px;
+    grid-gap: 10px;
     padding: 0 10px;
     font-weight: 800;
     color: ${p => p.theme.darkenedNeutralColor};
