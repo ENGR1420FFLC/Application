@@ -223,6 +223,16 @@ app.get('/api/events/:month', (request, response) => {
   })
 })
 
+app.delete('/api/events/:id', (request, response) => {
+  Connection.findByIdAndRemove(request.params.id)
+  .then(result => {
+    response.status(204).end()
+  })
+  .catch(error => {
+    response.status(400).send({error: 'malformatted id'})
+  })
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
