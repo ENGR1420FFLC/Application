@@ -174,6 +174,26 @@ app.delete('/api/events/:id', (request, response) => {
   })
 })
 
+app.delete('/api/locations/:id', (request, response) => {
+  Location.findByIdAndRemove(request.params.id)
+  .then(result => {
+    Connection.find({fromId: request.params.id}).then(events => {
+      for (connection in events) {
+        Connection.findByIdAndRemove(connection.id);
+      }
+      Connection.find({toId: request.params.id}).then(events2 => {
+        for (connection2 in events2) {
+          Connection.findByIdAndRemove(connection2.id);
+        }
+        response.status(204).end()
+      })
+    })
+  })
+  .catch(error => {
+    response.status(400).send({error: 'malformatted id'})
+  })
+})
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
