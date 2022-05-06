@@ -140,7 +140,7 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                         key={location.id?.toString()} 
                         setLocations={setLocations}
                         connectionConstructors={connectionConstructors}
-                        numConnections={Math.round(Math.random() * 3)}
+                        numConnections={1}
                         />
                     return null
                 })}
