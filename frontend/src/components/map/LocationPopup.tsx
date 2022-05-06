@@ -86,6 +86,7 @@ const LocationPopup = ({ location, locations, show, setShow, connectionConstruct
                             connectionConstructor={connection} 
                             locations={locations} 
                             connectionConstructors={displayConnections} 
+                            removeConnection = {() => null}
                         />)}
                     </>
                 : "No connections found"}

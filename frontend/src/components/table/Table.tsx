@@ -40,6 +40,10 @@ const Table = ({ name, connectionConstructors, setConnectionConstructors, locati
         setConnectionConstructors([...connectionConstructors, connection])
     }
 
+    const removeConnection = (connection: ConnectionConstructor) => {
+        setConnectionConstructors(connectionConstructors.filter(connect => connect.id != connection.id))
+    }
+
     return(
         <>
             <HeaderWrapper>
@@ -55,7 +59,7 @@ const Table = ({ name, connectionConstructors, setConnectionConstructors, locati
                 {connectionConstructors.map(connection => <ConnectionRow 
                     setLocations={setLocations}
                     key={connection.id.toString()} 
-                    connectionConstructor={connection} locations={locations} connectionConstructors={connectionConstructors}/>)}
+                    connectionConstructor={connection} locations={locations} connectionConstructors={connectionConstructors} removeConnection={removeConnection}/>)}
             </ItemsWrapper>
             <Center>
                 <Button content={<><FaPlus />Add connection</>} onClick={() => setShowAddPopup(true)} />
