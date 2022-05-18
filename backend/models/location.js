@@ -7,7 +7,9 @@ const locationSchema = new mongoose.Schema({
   numPeople: Number,
   expiration: Date,
   identity:String,
-  name:String,
+  name: String,
+  radius: Number,
+  weeklyNeeds: [Number]
 })
 
 locationSchema.set('toJSON', {

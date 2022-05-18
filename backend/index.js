@@ -88,7 +88,9 @@ app.post('/api/locations', (request, response) => {
     longitude: body.longitude,
     latitude: body.latitude,
     numPeople: body.numPeople,
-    expiration: body.expiration
+    expiration: body.expiration,
+    weeklyNeeds: body.weeklyNeeds?.slice(0, 4) || [1, 1, 1, 1],
+    radius: body.radius
   })
 
   location.save().then(savedLocation => {
