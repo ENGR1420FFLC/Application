@@ -27,9 +27,12 @@ const addLocation = (location: Location): Promise<Location> => {
         longitude: location.longitude,
         latitude: location.latitude,
         numPeople: location.numPeople,
-        expiration: location.expiration === -1 ? null : location.expiration
+        expiration: location.expiration === -1 ? null : location.expiration,
+        radius: location.radius,
+        isFFLCPartner: location.isFFLCPartner,
+        weeklyNeeds: location.weeklyNeeds
     }
-
+    
     return axios.post('/api/locations', body).then(data => data.data)
 }
 
@@ -48,9 +51,9 @@ const addConnection = (connection: ConnectionForm): Promise<ConnectionConstructo
         .then(data => data.data)
 }
 
-const deleteLocation = (location: Location): Promise<any> => {
+const deleteLocation = (id: string): Promise<any> => {
     const config = {
-        data: { id: location.id?.toString() }
+        data: { id: id }
     }
 
     return axios.delete('/api/locations', config)

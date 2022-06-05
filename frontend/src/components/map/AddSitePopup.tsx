@@ -6,6 +6,7 @@ import Dropdown from "../UI/dropdown/Dropdown";
 import Input from "../UI/input/Input";
 import Service from "../../services/Service";
 import Location from "../../services/models/Location";
+import { ObjectID } from "bson";
 
 const Wrapper = styled.div`
     display: flex;
@@ -56,7 +57,9 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
         address: "",
         identity: "Site",
         daysOfOperation: "",
-        isPartner: "NO"
+        isPartner: false,
+        weeklyNeeds: [1, 1, 1, 1],
+        radius: 0
     }
 
     const [data, setData] = useState(defaultData)
@@ -68,13 +71,28 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
 
     const HandleSubmit = () => {
 
+        // const nl = {
+        //     id: null,
+        //     latitude: defaultLocation[0],
+        //     longitude: defaultLocation[1],
+        //     numPeople: data.numPeople,
+        //     expiration: data.expiration,
+        //     identity: data.identity,
+        //     radius: data.radius,
+        //     name: data.name,
+        // }
+        // addLocation(nl)
+
         Service.addLocation({
             latitude: defaultLocation[0],
             longitude: defaultLocation[1],
             numPeople: data.numPeople,
             expiration: data.expiration,
             identity: data.identity,
+            radius: data.radius,
+            weeklyNeeds: data.weeklyNeeds,
             name: data.name,
+            isFFLCPartner: data.isPartner,
             id: null
         })
         .then(newLocation => addLocation(newLocation))
@@ -131,6 +149,24 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
                 displayStates={["Less than 10", "20", "30", "More than 40"]}
                 setState={e => setData({ ...data, numPeople: e })} />
         </Row>}
+        {data.identity !== "Provider" && <>
+            {data.weeklyNeeds.map((w, i) => <Row><Field>Week {i + 1} need:</Field> <Dropdown
+                currentState={data.weeklyNeeds[i]}
+                possibleStates={[0.5, 1, 1.5]}
+                displayStates={["Less", "Normal amount", "More"]}
+                setState={e => {
+                    const newNeeds = data.weeklyNeeds.slice()
+                    newNeeds[i] = e
+                    setData({ ...data, weeklyNeeds: newNeeds })
+                }} /></Row>)}
+        </>}
+        {data.identity !== "Provider" && <Row>
+            <Field>Approximate area:</Field> <Dropdown
+                currentState={data.radius}
+                possibleStates={[0, 0.25, 0.5, 1]}
+                displayStates={["Exact", "Within quarter mile", "Within half mile", "Within a mile"]}
+                setState={e => setData({ ...data, radius: e })} />
+        </Row>}
         <Row>
             <Field>Days of operation:</Field> <Input value={data.description} setValue={e => setData({ ...data, description: e })} placeholder="..." />
         </Row>
@@ -140,7 +176,7 @@ const AddSitePopup = ({ show, setShow, defaultLocation, addLocation }: PropTypes
         <Row>
             <Field>FFLC Partner:</Field> <Dropdown
                 currentState={data.isPartner}
-                possibleStates={["NO", "YES"]}
+                possibleStates={[false, true]}
                 displayStates={["NO", "YES"]}
                 setState={e => setData({ ...data, isPartner: e })} />
         </Row>

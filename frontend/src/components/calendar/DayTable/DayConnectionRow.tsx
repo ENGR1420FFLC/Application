@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { FaPen } from "react-icons/fa";
-import { useState } from "react";
+import React, { useState } from "react";
 import Connection from "../../../services/models/Connection";
 import Location from "../../../services/models/Location";
 import LocationPopup from "../../map/LocationPopup";
 import Button from "../../UI/button/Button";
 import ConnectionConstructor from "../../../services/models/ConnectionConstructor";
+import { dataType } from "../../../App";
 
 const Wrapper = styled.div`
     border: 1px solid ${p => p.theme.complementColor};
@@ -31,10 +32,10 @@ const Clickable = styled.div`
 `
 
 // TODO: Implement deleting
-const DayConnectionRow = ({ connection, locations, connectionConstructors, setLocations }: { connection: Connection, locations: Location[], connectionConstructors: ConnectionConstructor[], setLocations: React.Dispatch<Location[]> }) => {
+const DayConnectionRow = ({ connection, allData, setAllData }: { connection: Connection, allData: dataType, setAllData: React.Dispatch<dataType> }) => {
 
-    const from = locations.find(l => l.id === connection.fromId)
-    const to = locations.find(l => l.id === connection.toId)
+    const from = allData.locations.find(l => l.id === connection.fromId)
+    const to = allData.locations.find(l => l.id === connection.toId)
 
     const [showToPopup, setShowToPopup] = useState(false)
     const [showFromPopup, setShowFromPopup] = useState(false)
@@ -46,8 +47,8 @@ const DayConnectionRow = ({ connection, locations, connectionConstructors, setLo
             {from ? <Clickable onClick={() => setShowFromPopup(true)}>{from.name}</Clickable> : <div>Unknown</div>}
             {to ? <Clickable onClick={() => setShowToPopup(true)}>{to.name}</Clickable> : <div>Unknown</div>}
         </Wrapper>
-        {from && <LocationPopup locations={locations} location={from} show={showFromPopup} setShow={setShowFromPopup} connectionConstructors={connectionConstructors} setLocations={setLocations}/>}
-        {to && <LocationPopup locations={locations} location={to} show={showToPopup} setShow={setShowToPopup} connectionConstructors={connectionConstructors} setLocations={setLocations}/>}
+        {from && <LocationPopup allData={allData} setAllData={setAllData} location={from} show={showFromPopup} setShow={setShowFromPopup} />}
+        {to && <LocationPopup allData={allData} setAllData={setAllData} location={to} show={showToPopup} setShow={setShowToPopup}/>}
     </>
 }
 

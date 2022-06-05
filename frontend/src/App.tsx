@@ -13,55 +13,41 @@ import Connection from './services/models/Connection';
 import Service from './services/Service';
 import ConnectionConstructor from './services/models/ConnectionConstructor';
 
+export type dataType = {
+    locations: Location[],
+    connectionConstructors: ConnectionConstructor[]
+}
+
+const emptyData: dataType = {
+    locations: [],
+    connectionConstructors: []
+}
 
 const App = () => {
 
+    const [allData, setAllData] = useState(emptyData)
     const [currentPage, setCurrentPage] = useState(Pages.MAP)
-
-    const emptyLocations: Location[] = []
-    const [locations, setLocations] = useState(emptyLocations)
-
-    const emptyConnectionConstructors: ConnectionConstructor[] = []
-    const [connectionConstructors, setConnectionConstructors] = useState(emptyConnectionConstructors)
 
     useEffect(() => {
         Service.getAllLocations()
-            .then((data: Location[]) => {
-                console.log(data)
-                setLocations(data)
+            .then((loc: Location[]) => {
+                Service.getAllConnectionConstructors()
+                    .then((con: ConnectionConstructor[]) => setAllData({ locations: loc, connectionConstructors: con }))
             })
-        Service.getAllConnectionConstructors()
-            .then((data: ConnectionConstructor[]) => setConnectionConstructors(data))
     }, [])
     
-    console.log(locations)
-
     // CONTENT STUFF VVV
-
     let content: ReactElement = <div>"404 Page not found"</div>
 
     switch(currentPage) {
         case Pages.MAP:
-            content = <Map
-                setLocations={setLocations}
-                connectionConstructors={connectionConstructors}
-                locations={locations}
-            />
+            content = <Map allData={allData} setAllData={setAllData}/>
             break
         case Pages.CONNECTIONS:
-            content = <Table 
-                setLocations={setLocations}
-                name="Connections" 
-                connectionConstructors={connectionConstructors}
-                setConnectionConstructors={setConnectionConstructors}
-                locations={locations}/>
+            content = <Table allData={allData} setAllData={setAllData}/>
             break
         case Pages.CALENDAR:
-            content = <Calendar 
-                setLocations={setLocations}
-                connectionConstructors={connectionConstructors}
-                locations={locations}
-                />
+            content = <Calendar allData={allData} setAllData={setAllData} />
             break
     }
 

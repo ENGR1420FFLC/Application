@@ -9,7 +9,8 @@ const locationSchema = new mongoose.Schema({
   identity:String,
   name: String,
   radius: Number,
-  weeklyNeeds: [Number]
+  weeklyNeeds: [Number],
+  isFFLCPartner: Boolean
 })
 
 locationSchema.set('toJSON', {

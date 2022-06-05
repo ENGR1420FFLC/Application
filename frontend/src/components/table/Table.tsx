@@ -10,14 +10,7 @@ import Button from "../UI/button/Button"
 import { FaPlus } from "react-icons/fa"
 import AddConnectionPopup from "./AddConnectionPopup"
 import Connection from "../../services/models/Connection"
-
-type PropTypes = {
-    name: string
-    connectionConstructors: ConnectionConstructor[]
-    locations: Location[]
-    setConnectionConstructors: React.Dispatch<ConnectionConstructor[]>
-    setLocations: React.Dispatch<Location[]>
-}
+import { dataType } from "../../App"
 
 const ItemsWrapper = styled.div`
     display: flex;
@@ -31,40 +24,31 @@ const Center = styled.div`
     justify-content: center;
 `
 
-const Table = ({ name, connectionConstructors, setConnectionConstructors, locations, setLocations }: PropTypes) => {
-
-    const [filter, setFilter] = useState("All")
+const Table = ({ allData, setAllData }: { allData: dataType, setAllData: React.Dispatch<dataType> }) => {
     const [showAddPopup, setShowAddPopup] = useState(false)
 
     const addConnection = (connection: ConnectionConstructor) => {
-        setConnectionConstructors([...connectionConstructors, connection])
-    }
-
-    const removeConnection = (connection: ConnectionConstructor) => {
-        setConnectionConstructors(connectionConstructors.filter(connect => connect.id != connection.id))
+        setAllData({...allData, connectionConstructors: [...allData.connectionConstructors, connection]})
     }
 
     return(
         <>
             <HeaderWrapper>
-                <Header>{name}</Header>
-                Show <Dropdown 
-                    currentState={filter} 
-                    possibleStates={["All", "Only repeat", "Only one-time"]}
-                    displayStates={["All", "Only repeat", "Only one-time"]} 
-                    setState={setFilter} />
+                <Header>Table</Header>
             </HeaderWrapper>
             <ItemsWrapper>
                 <TableHeader />
-                {connectionConstructors.map(connection => <ConnectionRow 
-                    setLocations={setLocations}
+                {allData.connectionConstructors.map(connection => <ConnectionRow 
+                    allData={allData}
+                    setAllData={setAllData}
+                    connectionConstructor={connection}
                     key={connection.id.toString()} 
-                    connectionConstructor={connection} locations={locations} connectionConstructors={connectionConstructors} removeConnection={removeConnection}/>)}
+                    />)}
             </ItemsWrapper>
             <Center>
                 <Button content={<><FaPlus />Add connection</>} onClick={() => setShowAddPopup(true)} />
             </Center>
-            <AddConnectionPopup locations={locations} show={showAddPopup} setShow={setShowAddPopup} addConnection={addConnection}/>
+            <AddConnectionPopup locations={allData.locations} show={showAddPopup} setShow={setShowAddPopup} addConnection={addConnection}/>
         </>
     )
 
