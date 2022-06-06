@@ -9,6 +9,7 @@ import ConnectionRow from "../table/ConnectionRow";
 import { SmallHeader } from "../textStyles/TextStyles";
 import TableHeader from "../table/TableHeader";
 import Service from "../../services/Service";
+import { dataType } from "../../App";
 
 const Wrapper = styled.div`
     font-size: 1rem;
@@ -54,25 +55,46 @@ type PropTypes = {
     setLocations: React.Dispatch<Location[]>
 }
 
-const LocationPopup = ({ location, locations, show, setShow, connectionConstructors, setLocations }: PropTypes) => {
+const LocationPopup = ({ allData, setAllData, location, show, setShow }: { allData: dataType, setAllData: React.Dispatch<dataType>, location: Location, show: boolean, setShow: React.Dispatch<boolean> }) => {
 
-    const displayConnections = connectionConstructors.filter(c => c.fromId === location.id || c.toId === location.id)
+    const displayConnections = allData.connectionConstructors.filter(c => c.fromId === location.id || c.toId === location.id)
+    
     const handleRemove = () => {
-        setLocations(locations.filter(l => l.id !== location.id))
+        console.log(location.id?.toString())
+        Service.deleteLocation(location.id?.toString() || "")
+        setAllData({ ...allData, locations: allData.locations.filter(l => l.id !== location.id) })
         setShow(false)
     }
 
     const locationContent = <Wrapper>
+        <SmallHeader>
+            Contact
+        </SmallHeader>
+        <Row name="Phone number" value={"###-###-####"} />
+        <Row name="Email address" value={"abc@gmail.com"} />
+
+        <SmallHeader>
+            Info
+        </SmallHeader>
         <Row name="Description" value="No Description Provided..." />
         <Row name="Type" value={location.identity} />
-        <Row name="Number of people" value={(Math.round(location.numPeople) || "N/A").toString()}/>
+        <Row name="Est. # of people" value={(Math.round(location.numPeople) || "N/A").toString()}/>
         <Row name="Location" value={Math.round(location.longitude).toString() + ", " + Math.round(location.latitude).toString()} />
         <Row name="Days of operation" value={"Tu, Th, Su"} />
         <Row name="Is FFLC partner" value={"YES"} />
-        <Right>
-            <Button content={<>Delete<FaTrash /></>} onClick={handleRemove}/>
-        </Right>
+        <Row name="Radius" value={(location.radius?.toString() || "0") + " mile(s)"} />
+        <div>
+            Weekly Needs
+            <div style={{ display: "flex", gap: "5px", height: "50px", alignItems: "flex-end", margin: "40px 50px", position: "relative" }}>
+                {(location.weeklyNeeds.length === 4 ? location.weeklyNeeds : [1, 1, 1, 1]).map((wk, i) => <div
+                    style={{ backgroundColor: "black", width: "15px", height: `${wk * 30}px`, position: "relative" }}
+                ><div style={{ position: "absolute", bottom: "-25px", left: "2.5px" }}>{i + 1}</div></div>)}
+                <div style={{ position: "absolute", left: "-50px", top: "-20px" }}>More</div>
+                <div style={{ position: "absolute", left: "-50px", top: "30px" }}>Less</div>
+            </div>
+        </div>
 
+        <Button content={<>Delete Location<FaTrash /></>} onClick={handleRemove}/>
         <SmallHeader>
             Connections
         </SmallHeader>
@@ -81,11 +103,10 @@ const LocationPopup = ({ location, locations, show, setShow, connectionConstruct
                     <><TableHeader />{
                         displayConnections.map(connection => 
                         <ConnectionRow 
-                                setLocations={setLocations}
+                            allData={allData}
+                            setAllData={setAllData}
                             key={connection.id.toString()} 
                             connectionConstructor={connection} 
-                            locations={locations} 
-                            connectionConstructors={displayConnections} 
                         />)}
                     </>
                 : "No connections found"}

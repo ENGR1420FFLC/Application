@@ -7,6 +7,9 @@ type Location = {
     numPeople: number,
     expiration: Date | null | string | number,
     identity: string
+    radius: number | null,
+    weeklyNeeds: number[],
+    isFFLCPartner: boolean | null,
     name: string
 }
 

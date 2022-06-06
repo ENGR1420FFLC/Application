@@ -12,6 +12,7 @@ import Location from "../../services/models/Location"
 import { Icon, LatLngExpression, LeafletMouseEvent } from 'leaflet'
 import Arrow from './features/Arrow'
 import Checkbox from '../UI/checkbox/Checkbox'
+import { dataType } from '../../App'
 
 const Wrapper = styled.div`
     z-index: 400;
@@ -60,41 +61,27 @@ const UI = ({ setAdd, markerPos, setMarkerPos }: { setAdd: React.Dispatch<boolea
     </>
 }
 
-type PropTypes = {
-    connectionConstructors: ConnectionConstructor[]
-    locations: Location[]
-    setLocations: React.Dispatch<Location[]>
-}
-
-const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => {
+const Map = ({ allData, setAllData }: { allData: dataType, setAllData: React.Dispatch<dataType>}) => {
 
     const [showAddSite, setShowAddSite] = useState(false)
     const [siteFilter, setSiteFilter] = useState("0")
     const empty: LatLngExpression = [0, 0]
     const [markerPos, setMarkerPos] = useState(empty)
-    const [filterDays, setFilterDays] = useState([true, true, true, true, true, true, true])
 
     const addLocation = (location: Location) => {
-        setLocations([...locations, location])
+        setAllData({...allData, locations: [...allData.locations, location]})
     }
 
-    let locationsToShow = locations
+    let locationsToShow = allData.locations
     switch(siteFilter) {
         case "1":
-            locationsToShow = locations.filter(l => l.expiration !== null || l.identity !== "Site")
+            locationsToShow = allData.locations.filter(l => l.expiration !== null || l.identity !== "Site")
             break
         case "2":
-            locationsToShow = locations.filter(l => (l.expiration === null))
+            locationsToShow = allData.locations.filter(l => (l.expiration === null))
             break
     }
 
-    const toggleDay = (i: number) => {
-        return (value: boolean) => {
-            const newDays = filterDays.slice()
-            newDays[i] = value
-            setFilterDays(newDays)
-        }
-    }
 
     return (
         <>
@@ -102,10 +89,6 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                 <Header>
                     Map
                 </Header>
-                Show connections on
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, i) =>
-                    <Checkbox key={day} value={filterDays[i]} setValue={toggleDay(i)} content={day} />)}
-
             </HeaderWrapper>
 
             <HeaderWrapper>
@@ -135,17 +118,15 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
 
                 {locationsToShow.map(location => {
                     if (location.latitude && location.longitude) return <LocationMarker 
-                        locations={locations} 
+                        allData={allData} 
+                        setAllData={setAllData}
                         location={location} 
                         key={location.id?.toString()} 
-                        setLocations={setLocations}
-                        connectionConstructors={connectionConstructors}
-                        numConnections={Math.round(Math.random() * 3)}
                         />
                     return null
                 })}
 
-                {connectionConstructors.map(connection => {
+                {allData.connectionConstructors.map(connection => {
                     const from = locationsToShow.find(l => l.id === connection.fromId)
                     const to = locationsToShow.find(l => l.id === connection.toId)
 
@@ -154,6 +135,7 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                         const end: LatLngExpression = [to.latitude, to.longitude]
                         return <Arrow start={start} end={end} key={connection.id.toString()}/>
                     }
+                    return null
                 })}
 
             </MapContainer>
@@ -165,6 +147,7 @@ const Map = ({ connectionConstructors, locations, setLocations }: PropTypes) => 
                     setShowAddSite(true)
                 }} />
             </Center>
+            <Center><img src={require("./features/assets/Legend.png")} alt="" width={300} style={{ margin: "auto" }}/></Center>
         </>
     )
 }

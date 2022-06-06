@@ -67,8 +67,8 @@ const getArrowCoords = (start: LatLngExpression, end: LatLngExpression): LatLngE
 
 const Arrow = ({ start, end, color="black", dashed=false }: { start: LatLngExpression, end: LatLngExpression, color?: string, dashed?: boolean }) => {
     let opt = {}
-    if (dashed) opt = { color: color, weight: 3, dashArray: '2, 6', dashOffset: '0' }
-    else opt = { color: color, weight: 3 }
+    if (dashed) opt = { color: color, weight: 2, dashArray: '2, 6', dashOffset: '0' }
+    else opt = { color: color, weight: 2 }
 
     return <LayerGroup>
         <Polyline pathOptions={opt} positions={getArrowCoords(start, end)} />

@@ -88,7 +88,10 @@ app.post('/api/locations', (request, response) => {
     longitude: body.longitude,
     latitude: body.latitude,
     numPeople: body.numPeople,
-    expiration: body.expiration
+    expiration: body.expiration,
+    weeklyNeeds: body.weeklyNeeds?.slice(0, 4) || [1, 1, 1, 1],
+    radius: body.radius,
+    isFFLCPartner: body.isFFLCPartner
   })
 
   location.save().then(savedLocation => {
@@ -97,6 +100,14 @@ app.post('/api/locations', (request, response) => {
 })
 
 app.delete('/api/locations', (request, response) => {
+    console.log(request.params.id)
+    Location.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => {
+            response.status(400).send({ error: 'malformatted id' })
+        })
     // do nothing
 })
 
@@ -161,6 +172,36 @@ app.get('/api/events/:month', (request, response) => {
     response.json({
       events: result
     })
+  })
+})
+
+app.delete('/api/events/:id', (request, response) => {
+  Connection.findByIdAndRemove(request.params.id)
+  .then(result => {
+    response.status(204).end()
+  })
+  .catch(error => {
+    response.status(400).send({error: 'malformatted id'})
+  })
+})
+
+app.delete('/api/locations/:id', (request, response) => {
+  Location.findByIdAndRemove(request.params.id)
+  .then(result => {
+    Connection.find({fromId: request.params.id}).then(events => {
+      for (connection in events) {
+        Connection.findByIdAndRemove(connection.id);
+      }
+      Connection.find({toId: request.params.id}).then(events2 => {
+        for (connection2 in events2) {
+          Connection.findByIdAndRemove(connection2.id);
+        }
+        response.status(204).end()
+      })
+    })
+  })
+  .catch(error => {
+    response.status(400).send({error: 'malformatted id'})
   })
 })
 
