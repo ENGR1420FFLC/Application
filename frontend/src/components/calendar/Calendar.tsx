@@ -8,6 +8,7 @@ import Connection from "../../services/models/Connection";
 import ConnectionConstructor from "../../services/models/ConnectionConstructor";
 import Location from "../../services/models/Location";
 import Service from "../../services/Service";
+import { dataType } from "../../App";
 
 
 const CalendarWrapper = styled.div`
@@ -41,17 +42,10 @@ enum Months {
     January, February, March, April, May, June, July, August, September, October, November, December
 }
 
-type PropTypes = {
-    connectionConstructors: ConnectionConstructor[]
-    locations: Location[]
-    setLocations: React.Dispatch<Location[]>
-}
-
-const Calendar = ({ connectionConstructors , locations, setLocations }: PropTypes) => {
+const Calendar = ({ allData, setAllData }: { allData: dataType, setAllData: React.Dispatch<dataType> }) => {
 
     const emptyConnections: Connection[] = []
     const [connections, setConnections] = useState(emptyConnections)
-
     const [displayMonth, setDisplayMonth] = useState(new Date().getMonth())
     const [displayYear, setDisplayYear] = useState(new Date().getFullYear())
 
@@ -78,13 +72,11 @@ const Calendar = ({ connectionConstructors , locations, setLocations }: PropType
         const date = new Date(`${displayYear}-${displayMonth + 1}-${day}`)
         const content = connections.filter(connection => datesAreEqual(connection.date, date))
         dayObjects.push(<Day 
-            setLocations={setLocations}
-            connectionConstructors={connectionConstructors}
+            allData={allData}
+            setAllData={setAllData}
+            connections={content}
             day={date}
             key={date.toString()} 
-            isToday={datesAreEqual(new Date(), date)}
-            connections={content}
-            locations={locations}
         />)
     }
 

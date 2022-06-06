@@ -4,6 +4,8 @@ import DayPopup from "./DayPopup";
 import Connection from "../../services/models/Connection";
 import Location from "../../services/models/Location";
 import ConnectionConstructor from "../../services/models/ConnectionConstructor";
+import { dataType } from "../../App";
+import { connect } from "http2";
 
 const DayWrapper = styled.div(({ theme, isToday, offset, numConnections }: { theme: any, isToday: boolean, offset: number, numConnections: number }) => `
     flex: 0 0 14%;
@@ -78,13 +80,20 @@ type PropTypes = {
     setLocations: React.Dispatch<Location[]>
 }
 
-const Day = ({ day, offset = 0, isToday, connections, locations, connectionConstructors, setLocations }: PropTypes) => {
+const Day = ({ allData, setAllData, day, connections, offset }: { allData: dataType, setAllData: React.Dispatch<dataType>, day: Date, connections: Connection[], offset?: number }) => {
 
     const [showPopup, setShowPopup] = useState(false)
 
+    const datesAreEqual = (d1: Date, d2: Date) => {
+        return d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate()
+    }
+    const isToday = datesAreEqual(day, new Date())
+
     return (
         <>
-            <DayWrapper offset={offset} isToday={isToday} onClick={() => setShowPopup(true)} numConnections={connections.length}>
+            <DayWrapper offset={offset || 0} isToday={isToday} onClick={() => setShowPopup(true)} numConnections={connections.length}>
                 <DayHeader isToday={isToday} numConnections={connections.length}>
                     <DayBubble isToday={isToday}>{day.getDate()}</DayBubble>
                     <Num isToday={isToday}>{
@@ -101,12 +110,12 @@ const Day = ({ day, offset = 0, isToday, connections, locations, connectionConst
 
             <DayPopup 
                 day={day} 
-                locations={locations} 
-                connections={connections} 
+                connections={connections}
+                allData={allData}
+                setAllData={setAllData}
                 show={showPopup} 
                 setShow={setShowPopup} 
-                setLocations={setLocations}
-                connectionConstructors={connectionConstructors}/>
+                />
         </>
     )
 }
